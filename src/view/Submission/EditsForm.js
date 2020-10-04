@@ -80,7 +80,7 @@ export default ({ edits, selectedEdit, editChange, optionChange, staticOptionCha
             </div>
             <Form.Check
                 type="checkbox"
-                onChange={(e) => (staticOptionChange('repairMutation', e.target.checked))}
+                onChange={(e) => (staticOptionChange('repair', e.target.checked))}
             />
             </Col>
             <Col md={2}/>

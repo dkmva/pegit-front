@@ -5,10 +5,10 @@ import { store } from "configureStore";
 import { routeHome } from "./routes";
 
 // Actions
-const REQUESTED_TRANSCRIPT = 'prime_design/state/transcript/REQUESTED_TRANSCRIPT';
-const FETCH_TRANSCRIPT = 'prime_design/state/transcript/FETCH_TRANSCRIPT';
-const FETCH_TRANSCRIPT_SUCCEEDED = 'prime_design/state/transcript/FETCH_TRANSCRIPT_SUCCEEDED';
-const FETCH_TRANSCRIPT_FAILED = 'prime_design/state/transcript/FETCH_TRANSCRIPT_FAILED';
+const REQUESTED_TRANSCRIPT = 'pegit/state/transcript/REQUESTED_TRANSCRIPT';
+const FETCH_TRANSCRIPT = 'pegit/state/transcript/FETCH_TRANSCRIPT';
+const FETCH_TRANSCRIPT_SUCCEEDED = 'pegit/state/transcript/FETCH_TRANSCRIPT_SUCCEEDED';
+const FETCH_TRANSCRIPT_FAILED = 'pegit/state/transcript/FETCH_TRANSCRIPT_FAILED';
 
 // Reducer
 const INITIAL_STATE = {

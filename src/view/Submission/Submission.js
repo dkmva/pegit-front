@@ -28,13 +28,13 @@ export class Submission extends Component {
         if (this.props.edits.length > 0) {
             this._params = JSON.parse(JSON.stringify(this.props.edits[0].options));
             this._staticOptions = {
-                repairMutation: {value: false},
+                repair: {value: false},
                 silencePAM: {value: false},
             }
         } else {
             this._params = {};
             this._staticOptions = {
-                repairMutation: {value: false},
+                repair: {value: false},
                 silencePAM: {value: false},
             }
         }

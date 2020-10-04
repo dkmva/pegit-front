@@ -62,7 +62,7 @@ export default ({changeAdvancedOption, advancedOptions}) => {
                             overlay={
                                 <Popover id="repairTooltip">
                                     <Popover.Content>
-                                        Desired homology downstream of mutations.
+                                        Desired homology downstream of edits.
                                     </Popover.Content>
                                 </Popover>
                             }

@@ -1,14 +1,15 @@
 import {select, spawn, take, put} from 'redux-saga/effects'
 import { connectRoutes } from 'redux-first-router'
 
-import { requestOrganisms } from 'state/organisms'
-import { requestEdits } from 'state/edits'
-import { requestAdvancedOptions } from 'state/home'
 import { loadCustomSequence } from "state/customsequence";
+import { requestEdits } from 'state/edits'
 import { loadRouteGene } from 'state/gene'
+import { requestAdvancedOptions } from 'state/home'
+import { loadRouteSummary, loadRouteDetail } from 'state/job'
+import { requestNucleases } from 'state/nucleases'
+import { requestOrganisms } from 'state/organisms'
 import { loadRouteRegion } from 'state/region'
 import { loadRouteTranscript } from "state/transcript";
-import { loadRouteSummary, loadRouteDetail } from 'state/job'
 
 
 // Actions
@@ -83,9 +84,10 @@ const sideEffectsRoutesMap = {
 
 function * routes () {
   const initialRoute = yield select(routeType);
-  yield put(requestOrganisms());
-  yield put(requestEdits());
   yield put(requestAdvancedOptions());
+  yield put(requestEdits());
+  yield put(requestNucleases());
+  yield put(requestOrganisms());
   // Run saga in route map that matches initialRoute if exists
   if (sideEffectsRoutesMap[initialRoute]) {
     yield spawn(sideEffectsRoutesMap[initialRoute])

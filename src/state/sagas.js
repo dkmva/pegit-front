@@ -1,13 +1,14 @@
 import { all, fork } from 'redux-saga/effects'
 
-import { routes } from 'state/routes'
+import { watchRequestEdits } from "state/edits";
+import { watchRequestGene } from "state/gene";
 import { watchSearchGenes, watchSearchClinVar, watchRequestAddEdit, watchRequestAddMultiple, watchRequestAdvancedOptions } from "state/home";
 import { watchSubmitJob, watchSubmitClinVar } from "state/job";
-import { watchRequestGene } from "state/gene";
-import { watchRequestRegion } from "state/region";
-import { watchRequestTranscript } from "state/transcript";
-import { watchRequestEdits } from "state/edits";
+import { watchRequestNucleases } from "state/nucleases";
 import { watchRequestOrganisms } from "state/organisms";
+import { watchRequestRegion } from "state/region";
+import { routes } from 'state/routes'
+import { watchRequestTranscript } from "state/transcript";
 
 export default function * rootSaga () {
   yield all([
@@ -20,6 +21,7 @@ export default function * rootSaga () {
       fork(watchRequestRegion),
       fork(watchRequestTranscript),
       fork(watchRequestEdits),
+      fork(watchRequestNucleases),
       fork(watchRequestOrganisms),
       fork(watchRequestAddEdit),
       fork(watchRequestAddMultiple),

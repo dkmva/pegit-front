@@ -7,12 +7,14 @@ import { FaRegQuestionCircle, FaExternalLinkAlt } from 'react-icons/fa';
 import { Container, Row, Col, Card, Form, Button, OverlayTrigger, Popover } from "react-bootstrap";
 import { AsyncTypeahead, Typeahead, Highlighter } from 'react-bootstrap-typeahead';
 
+import { setCustomSequence } from "state/customsequence";
 import { searchGenes, requestSearchClinVar, clearSearchGenes, selectOrganism,
          removeEdit, resetEditList, requestAddEdit,requestAddMultiple, changeAdvancedOption } from "state/home";
 import { requestGene } from "state/gene";
 import { submitJob, submitClinVar } from "state/job";
-import { setCustomSequence } from "state/customsequence";
+import { selectNuclease } from "state/nucleases";
 import { routeGene, routeTranscript, routeCustomSequence, routeRegion } from 'state/routes';
+
 import LogoRow from "view/Home/components/LogoRow";
 import TranscriptList from "view/Home/components/TranscriptList";
 import ClinVarSelection from "view/Home/components/ClinVarSelection";
@@ -87,18 +89,21 @@ export class Home extends React.Component {
     };
 
     _handleJobSubmit = () => {
-        const { selectedOrganism, edits, submitJob, advancedOptions } = this.props;
+        const { selectedOrganism, edits, submitJob, advancedOptions, selectedNuclease } = this.props;
         submitJob({
             organism: selectedOrganism.id,
             edits,
-            advancedOptions
+            advancedOptions,
+            selectedNuclease,
         })
     };
+
     _handleClinVarSubmit = () => {
-        const { edits, submitClinVar, advancedOptions } = this.props;
+        const { edits, submitClinVar, advancedOptions, selectedNuclease } = this.props;
         submitClinVar({
             edits,
-            advancedOptions
+            advancedOptions,
+            selectedNuclease,
         })
     };
 
@@ -144,7 +149,7 @@ export class Home extends React.Component {
     render() {
         let { organisms, organismsLoading, selectedOrganism,
             gene: selectedGene, geneLoading,
-            edits, invalid,
+            edits, invalid, nucleases, selectedNuclease, selectNuclease,
             removeEdit, resetEditList, isParsing,
             advancedOptions, changeAdvancedOption } = this.props;
         const { searching: clinVarSearching, results: clinVarResults } = this.props.clinvar;
@@ -333,6 +338,9 @@ export class Home extends React.Component {
                             handleJobSubmit={clinVar ? this._handleClinVarSubmit : this._handleJobSubmit}
                             parseImportFile={this._parseImportFile}
                             isParsing={isParsing}
+                            nucleases={nucleases}
+                            selectedNuclease={selectedNuclease}
+                            selectNuclease={selectNuclease}
                         />
                     </Col>
                 </Row>
@@ -344,20 +352,23 @@ export class Home extends React.Component {
 const mapStateToProps = (state) => {
     let { values: organisms, loading: organismsLoading } = state.organisms;
     let { gene, loading: geneLoading } = state.gene;
+    let { nucleases, selectedNuclease } = state.nucleases;
     let { clinvar, edits, genes, selectedOrganism, advancedOptions, addEdit } = state.home;
 
     return {
-        organisms,
-        organismsLoading,
-        selectedOrganism,
-        genes,
-        gene,
-        geneLoading,
+        advancedOptions,
         clinvar,
         edits: edits.validated || [],
+        gene,
+        genes,
+        geneLoading,
         invalid: edits.errors || [],
-        advancedOptions,
         isParsing: addEdit.submitting,
+        nucleases,
+        organisms,
+        organismsLoading,
+        selectedNuclease,
+        selectedOrganism,
     }
 };
 
@@ -379,6 +390,7 @@ const mapDispatchToProps = (dispatch) => {
         requestAddEdit: (edit) => dispatch(requestAddEdit(edit)),
         requestAddMultiple: (edits) => dispatch(requestAddMultiple(edits)),
         changeAdvancedOption: (option, value) => dispatch(changeAdvancedOption(option, value)),
+        selectNuclease: (e) => dispatch(selectNuclease(e.target.value)),
     }
 };
 

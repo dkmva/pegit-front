@@ -1,5 +1,5 @@
 import React  from 'react';
-import {Button, Card, Col, OverlayTrigger, Popover, Row} from "react-bootstrap";
+import {Button, Card, Col, Form, OverlayTrigger, Popover, Row} from "react-bootstrap";
 import ToolkitProvider from "react-bootstrap-table2-toolkit";
 import BootstrapTable from "react-bootstrap-table-next";
 
@@ -8,7 +8,7 @@ import { FaUndo, FaDownload, FaUpload } from 'react-icons/fa';
 import AdvancedOptions from "./AdvancedOptions";
 
 
-export default ({ edits, invalid, editColumns, removeEdit, resetEditList, selectedOrganism, handleJobSubmit, parseImportFile, changeAdvancedOption, advancedOptions, isParsing }) => {
+export default ({ edits, invalid, editColumns, removeEdit, resetEditList, selectedOrganism, handleJobSubmit, parseImportFile, changeAdvancedOption, advancedOptions, isParsing, nucleases, selectedNuclease, selectNuclease }) => {
 
     return <Row>
         <Col>
@@ -56,11 +56,17 @@ export default ({ edits, invalid, editColumns, removeEdit, resetEditList, select
                                         <FaUndo /> Clear and reset
                                     </Button>
                                 </Col>
-                                <Col md={5}>
+                                <Col md={3}>
                                     <Button variant="outline-success " disabled={edits.length < 1} block
                                             onClick={handleJobSubmit}>
                                         Submit
                                     </Button>
+                                </Col>
+
+                                <Col md={2}>
+                                    <Form.Control as="select" value={selectedNuclease} onChange={selectNuclease}>
+                                        { nucleases.map((n, i) => <option key={n.name} value={n.name}>{n.name}</option>) }
+                                    </Form.Control>
                                 </Col>
                                 <Col md={2}>
                                     <Button variant="link" style={{color: 'black', fontWeight: 'bold'}}

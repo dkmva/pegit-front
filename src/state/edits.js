@@ -3,10 +3,10 @@ import {call, put, takeLatest} from "@redux-saga/core/effects";
 import { store } from "configureStore";
 
 // Actions
-const REQUESTED_EDITS = 'prime_design/state/edits/REQUESTED_EDITS';
-const FETCH_EDITS = 'prime_design/state/edits/FETCH_EDITS';
-const FETCH_EDITS_SUCCEEDED = 'prime_design/state/edits/FETCH_EDITS_SUCCEEDED';
-const FETCH_EDITS_FAILED = 'prime_design/state/edits/FETCH_EDITS_FAILED';
+const REQUESTED_EDITS = 'pegit/state/edits/REQUESTED_EDITS';
+const FETCH_EDITS = 'pegit/state/edits/FETCH_EDITS';
+const FETCH_EDITS_SUCCEEDED = 'pegit/state/edits/FETCH_EDITS_SUCCEEDED';
+const FETCH_EDITS_FAILED = 'pegit/state/edits/FETCH_EDITS_FAILED';
 
 // Reducer
 const INITIAL_STATE = {
