@@ -13,13 +13,14 @@ import { routePegRNADetail, routeNickingDetail } from 'state/routes';
 
 import { offTargetColumns } from './components/columns'
 import Image from './components/Image'
+import NucleaseBox from "../Shared/NucleaseBox";
 
 export class NickingDetail extends Component {
 
     render() {
 
         const { jobId, organism, sequenceObject, status, sequenceType, nicking, edit, editOptions, warning, chosenEdit,
-            pegRNAs, chosenPegRNA, pegRNA, chosenNicking, routePegRNADetail, routeNickingDetail } = this.props;
+            pegRNAs, chosenPegRNA, pegRNA, chosenNicking, routePegRNADetail, routeNickingDetail, nuclease } = this.props;
         const { spacer='', offtargets=[[],[]] } = nicking;
 
         const chosenNickingIndex = pegRNA.nicking.map(n => n.spacer).indexOf(chosenNicking);
@@ -60,6 +61,7 @@ export class NickingDetail extends Component {
                                 <Col md={4}>
                                     <OrganismBox organism={organism} />
                                     <SequenceBox baseURL={organism.sequenceSearch} sequenceType={sequenceType} sequenceObject={sequenceObject} />
+                                    <NucleaseBox nuclease={nuclease} />
                                     <label style={{display: 'block'}}>Spacer sequence</label>
                                     <strong className="info text-primary mono">{spacer}</strong>
                                     <hr/>
@@ -101,7 +103,7 @@ export class NickingDetail extends Component {
 
 const mapStateToProps = (state) => {
 
-    let { jobId, organism, status } = state.job.summary;
+    let { jobId, organism, status, nuclease } = state.job.summary;
     organism = organism ? organism : {name: undefined, assembly: undefined, source: undefined };
     let { pegRNAs=[], edit, warning, options='', sequenceType } = state.job.detail;
 
@@ -127,6 +129,7 @@ const mapStateToProps = (state) => {
         chosenPegRNA: state.location.payload.pegRNA,
         chosenNicking: state.location.payload.nicking,
         pegRNAs,
+        nuclease,
     }
 
 

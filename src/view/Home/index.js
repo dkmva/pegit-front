@@ -94,7 +94,7 @@ export class Home extends React.Component {
             organism: selectedOrganism.id,
             edits,
             advancedOptions,
-            selectedNuclease,
+            nuclease: selectedNuclease,
         })
     };
 
@@ -103,7 +103,7 @@ export class Home extends React.Component {
         submitClinVar({
             edits,
             advancedOptions,
-            selectedNuclease,
+            nuclease: selectedNuclease,
         })
     };
 

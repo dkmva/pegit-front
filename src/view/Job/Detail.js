@@ -21,6 +21,7 @@ import JobStatusBox from "./components/JobStatusBox";
 import { pegRNASpacerPosition, pegRNAExtensionPosition, nickingGRNASpacerPosition } from "./functions/positionCalculations";
 
 import Image from './components/Image'
+import NucleaseBox from "../Shared/NucleaseBox";
 
 export class PegRNADetail extends Component {
 
@@ -35,7 +36,7 @@ export class PegRNADetail extends Component {
 
         const { jobId, organism, sequenceObject, status, sequenceType, pegRNA, warning, edit, options,
                 minPos, chosenEdit, routeJobDetail, routePegRNADetail, pegRNAs, chosenPegRNA,
-                visualSequence, nickingOffset, translations } = this.props;
+                visualSequence, nickingOffset, translations, nuclease } = this.props;
         let { nicking=[], spacer='', offtargets=[[],[]], alternateExtensions=[]} = pegRNA;
         const { selectedTab } = this.state;
         const chosenPegRNAIndex = pegRNAs.map(p => p.spacer).indexOf(chosenPegRNA);
@@ -149,12 +150,13 @@ export class PegRNADetail extends Component {
                                 <Col md={4}>
                                     <OrganismBox organism={organism} />
                                     <SequenceBox baseURL={organism.sequenceSearch} sequenceType={sequenceType} sequenceObject={sequenceObject} />
+                                    <NucleaseBox nuclease={nuclease} />
                                     <label style={{display: 'block'}}>Spacer sequence</label>
                                     <strong className="info text-primary mono">{spacer}</strong>
                                     <hr/>
                                     <JobStatusBox jobId={jobId} jobStatus={status} warning={warning}/>
                                     <hr/>
-                                    <EditBox edit={edit} editOptions={options}/>
+                                    <EditBox edit={edit} editOptions={options} nuclease={nuclease}/>
                                 </Col>
                                 <Col md={8}>
                                     <Image spacer={pegRNA.spacer} rtTemplate={pegRNA.rtTemplate} pbs={pegRNA.pbs}/>
@@ -241,7 +243,7 @@ export class PegRNADetail extends Component {
 const mapStateToProps = (state) => {
 
 
-    let { jobId, organism, status } = state.job.summary;
+    let { jobId, organism, status, nuclease } = state.job.summary;
     organism = organism ? organism : {name: undefined, assembly: undefined, source: undefined };
     let { pegRNAs=[], edit, warning, options='', sequenceType, start, visualNicking, nickingOffset, translations=[] } = state.job.detail;
 
@@ -267,6 +269,7 @@ const mapStateToProps = (state) => {
         chosenEdit: state.location.payload.edit,
         chosenPegRNA: state.location.payload.pegRNA,
         pegRNAs,
+        nuclease,
     }
 };
 

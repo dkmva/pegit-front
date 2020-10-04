@@ -9,8 +9,10 @@ import OrganismBox from "view/Shared/OrganismBox";
 import { routeJobDetail } from 'state/routes';
 
 import { FaDownload } from 'react-icons/fa';
+import NucleaseBox from "../Shared/NucleaseBox";
+import nucleases from "../../state/nucleases";
 
-export const Summary = ({ organism={}, jobId, status, summary=[], routeJobDetail, warning, options={}, queuePosition }) => {
+export const Summary = ({ organism={}, jobId, status, summary=[], routeJobDetail, warning, options={}, queuePosition, nuclease }) => {
 
     return <Container fluid>
             <Row>
@@ -19,6 +21,8 @@ export const Summary = ({ organism={}, jobId, status, summary=[], routeJobDetail
                         <Row>
                             <Col>
                                 <OrganismBox organism={organism} />
+                                <br />
+                                <NucleaseBox nuclease={nuclease} />
                             </Col>
                             <Col style={{borderLeft: '1px solid rgba(0,0,0,.1)'}}>
                                 <JobStatusBox jobId={jobId} jobStatus={status} warning={warning} queuePosition={queuePosition}/>
@@ -79,7 +83,7 @@ export const Summary = ({ organism={}, jobId, status, summary=[], routeJobDetail
 
 const mapStateToProps = (state) => {
 
-    let { jobId, status, organism, summary, warning, options, queuePosition='' } = state.job.summary;
+    let { jobId, status, organism, summary, warning, options, queuePosition='', nuclease } = state.job.summary;
 
     return {
         organism,
@@ -89,6 +93,7 @@ const mapStateToProps = (state) => {
         warning,
         options,
         queuePosition,
+        nuclease,
     }
 };
 

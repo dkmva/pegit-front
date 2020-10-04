@@ -21,6 +21,7 @@ import { FaRegCheckCircle, FaRegTimesCircle, FaArrowLeft, FaArrowRight } from 'r
 
 import { Header, onTargetFormatter, offTargetFormatter, spacerURL, strandFormatter } from './components/formatters'
 import { pegRNASpacerPosition, pegRNAExtensionPosition } from "./functions/positionCalculations";
+import NucleaseBox from "../Shared/NucleaseBox";
 
 export class Job extends Component {
 
@@ -35,7 +36,7 @@ export class Job extends Component {
 
         const { jobId, pegRNAs, organism, edits=[], edit, status='Loading', queuePosition, editOptions, sequenceType,
                 sequenceObject, warning, minPos, primers, routeJobDetail, routeJobSummary,
-                chosenEdit, visualSequence, translations } = this.props;
+                chosenEdit, visualSequence, translations, nuclease } = this.props;
         const { annotations } = sequenceObject;
         const { selectedTab } = this.state;
         const chosenEditIndex = edits.map((e, i) => 'edit' + i).indexOf(chosenEdit);
@@ -179,6 +180,8 @@ export class Job extends Component {
                                     <OrganismBox organism={organism} />
                                     <br />
                                     <SequenceBox baseURL={organism.sequenceSearch} sequenceType={sequenceType} sequenceObject={sequenceObject} />
+                                    <br />
+                                    <NucleaseBox nuclease={nuclease} />
                                 </Col>
                                 <Col style={{borderLeft: '1px solid rgba(0,0,0,.1)'}}>
                                     <JobStatusBox jobId={jobId} jobStatus={status} warning={warning} queuePosition={queuePosition}/>
@@ -255,7 +258,7 @@ export class Job extends Component {
 
 const mapStateToProps = (state) => {
 
-    let { jobId, organism, edits, status } = state.job.summary;
+    let { jobId, organism, edits, status, nuclease } = state.job.summary;
     organism = organism ? organism : {name: undefined, assembly: undefined, source: undefined };
     let { pegRNAs=[], primers=[], edit, queuePosition, warning, options='', sequenceType, start, nickingOffset, visualSequence, translations=[] } = state.job.detail;
 
@@ -278,6 +281,7 @@ const mapStateToProps = (state) => {
         edits,
         minPos: start + nickingOffset,
         chosenEdit: state.location.payload.edit,
+        nuclease,
     }
 };
 
