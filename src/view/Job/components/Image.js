@@ -24,7 +24,8 @@ const rtTemplateFragments = (rtTemplate) => {
 };
 
 export default ({spacer='', pbs='', rtTemplate=''}) => {
-    rtTemplate = rtTemplate.toUpperCase();
+    rtTemplate = rtTemplate.toUpperCase().replaceAll('T', 'U');
+    pbs = pbs.replaceAll('T', 'U')
     const [first5, loopfirst, flip, looplast, last5] = rtTemplateFragments(rtTemplate);
     //pbs = 'ABCDEFGHIJKLMNOPQRSTUV'
     const pbsLength = pbs.length;
@@ -535,7 +536,7 @@ export default ({spacer='', pbs='', rtTemplate=''}) => {
                 <path d="M508.7 221.7L508.7 234" className="st10"/>
             </g>
             <text className="st11 st12 st7" transform="translate(256.166 301.005)">
-                {spacer.replace('T', 'U')}
+                {spacer.replaceAll('T', 'U')}
             </text>
             <text className="st11 st12 st7" transform="rotate(30 48.05 910.285)">
                 {reverse(first5)}
