@@ -27,8 +27,8 @@ export default ({spacer='', pbs='', rtTemplate=''}) => {
     rtTemplate = rtTemplate.toUpperCase().replaceAll('T', 'U');
     pbs = pbs.replaceAll('T', 'U')
     const [first5, loopfirst, flip, looplast, last5] = rtTemplateFragments(rtTemplate);
-    //pbs = 'ABCDEFGHIJKLMNOPQRSTUV'
     const pbsLength = pbs.length;
+    const spacerLength = spacer.length;
     return <svg
         xmlns="http://www.w3.org/2000/svg"
         x="0"
@@ -494,7 +494,7 @@ export default ({spacer='', pbs='', rtTemplate=''}) => {
             <text className="st5 st6" transform="translate(70.365 272.69)">
                 3&apos;
             </text>
-            <text className="st5 st7" transform="translate(256.166 259.223)">
+            <text className="st5 st7" x={(20-spacerLength)*10} transform="translate(256.166 259.223)">
                 {dnaComplement(spacer).compSeq}
             </text>
             <path d="M56.8 252.5L248.8 251.5" className="st8"/>
@@ -535,14 +535,14 @@ export default ({spacer='', pbs='', rtTemplate=''}) => {
                 <path d="M523.2 221.7L523.2 234" className="st10"/>
                 <path d="M508.7 221.7L508.7 234" className="st10"/>
             </g>
-            <text className="st11 st12 st7" transform="translate(256.166 301.005)">
+            <text className="st11 st12 st7" x={(20-spacerLength)*10} transform="translate(256.166 301.005)">
                 {spacer.replaceAll('T', 'U')}
             </text>
             <text className="st11 st12 st7" transform="rotate(30 48.05 910.285)">
                 {reverse(first5)}
             </text>
             <text className="st5 st7" transform="rotate(30 -139.884 921.731)">
-                {spacer.substring(17, 20)}
+                {spacer.substring(spacerLength-3, spacerLength)}
             </text>
             <g>
                 <path d="M483 219L483 243" className="st8"/>
@@ -568,8 +568,8 @@ export default ({spacer='', pbs='', rtTemplate=''}) => {
                 <path d="M586.7 219L586.7 243" className="st8"/>
             </g>
             <g>
-                <text className="st5 st7" transform="rotate(-30 526.818 -360.396)">
-                    {spacer.substring(0, 17)}
+                <text className="st5 st7" x={(20-spacerLength)*10} transform="rotate(-30 526.818 -360.396)">
+                    {spacer.substring(0, spacerLength-3)}
                 </text>
                 <text transform="rotate(-30 434.94 -420.564)">
                     <tspan x={(13-pbsLength)*10} y="0" className="st11 st12 st7">
@@ -618,26 +618,7 @@ export default ({spacer='', pbs='', rtTemplate=''}) => {
                 </tspan>
             </text>
             <g>
-                <path d="M262 261.5L262 285.5" className="st8"/>
-                <path d="M272.7 261.5L272.7 285.5" className="st8"/>
-                <path d="M283.4 261.5L283.4 285.5" className="st8"/>
-                <path d="M294.1 261.5L294.1 285.5" className="st8"/>
-                <path d="M304.8 261.5L304.8 285.5" className="st8"/>
-                <path d="M315.5 261.5L315.5 285.5" className="st8"/>
-                <path d="M326.2 261.5L326.2 285.5" className="st8"/>
-                <path d="M336.9 261.5L336.9 285.5" className="st8"/>
-                <path d="M347.6 261.5L347.6 285.5" className="st8"/>
-                <path d="M358.3 261.5L358.3 285.5" className="st8"/>
-                <path d="M370 261.5L370 285.5" className="st8"/>
-                <path d="M380.7 261.5L380.7 285.5" className="st8"/>
-                <path d="M391.4 261.5L391.4 285.5" className="st8"/>
-                <path d="M402.1 261.5L402.1 285.5" className="st8"/>
-                <path d="M412.8 261.5L412.8 285.5" className="st8"/>
-                <path d="M423.5 261.5L423.5 285.5" className="st8"/>
-                <path d="M434.2 261.5L434.2 285.5" className="st8"/>
-                <path d="M444.9 261.5L444.9 285.5" className="st8"/>
-                <path d="M455.6 261.5L455.6 285.5" className="st8"/>
-                <path d="M466.3 261.5L466.3 285.5" className="st8"/>
+                {spacer.split("").map((_, i) => <path key={i} d={"M"+(466.3-i*10.7)+" 261.5L"+(466.3-i*10.7)+" 285.5"} className="st8"/>)}
             </g>
         </g>
     </svg>
