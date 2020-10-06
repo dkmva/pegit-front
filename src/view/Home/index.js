@@ -150,7 +150,7 @@ export class Home extends React.Component {
         let { organisms, organismsLoading, selectedOrganism,
             gene: selectedGene, geneLoading,
             edits, invalid, nucleases, selectedNuclease, selectNuclease,
-            removeEdit, resetEditList, isParsing,
+            removeEdit, resetEditList, isParsing, isSubmitting,
             advancedOptions, changeAdvancedOption } = this.props;
         const { searching: clinVarSearching, results: clinVarResults } = this.props.clinvar;
         const { query, pasteSequence, dnaSeq, clinVarQuery, dnaSeqInvalid } = this.state;
@@ -338,6 +338,7 @@ export class Home extends React.Component {
                             handleJobSubmit={clinVar ? this._handleClinVarSubmit : this._handleJobSubmit}
                             parseImportFile={this._parseImportFile}
                             isParsing={isParsing}
+                            isSubmitting={isSubmitting}
                             nucleases={nucleases}
                             selectedNuclease={selectedNuclease}
                             selectNuclease={selectNuclease}
@@ -364,6 +365,7 @@ const mapStateToProps = (state) => {
         geneLoading,
         invalid: edits.errors || [],
         isParsing: addEdit.submitting,
+        isSubmitting: state.job.submitting,
         nucleases,
         organisms,
         organismsLoading,

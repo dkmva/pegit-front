@@ -8,7 +8,7 @@ import { FaUndo, FaDownload, FaUpload } from 'react-icons/fa';
 import AdvancedOptions from "./AdvancedOptions";
 
 
-export default ({ edits, invalid, editColumns, removeEdit, resetEditList, selectedOrganism, handleJobSubmit, parseImportFile, changeAdvancedOption, advancedOptions, isParsing, nucleases, selectedNuclease, selectNuclease }) => {
+export default ({ edits, invalid, editColumns, removeEdit, resetEditList, selectedOrganism, handleJobSubmit, parseImportFile, changeAdvancedOption, advancedOptions, isParsing, nucleases, selectedNuclease, selectNuclease, isSubmitting }) => {
 
     return <Row>
         <Col>
@@ -57,9 +57,9 @@ export default ({ edits, invalid, editColumns, removeEdit, resetEditList, select
                                     </Button>
                                 </Col>
                                 <Col md={3}>
-                                    <Button variant="outline-success " disabled={edits.length < 1} block
+                                    <Button variant="outline-success " disabled={edits.length < 1 || isSubmitting} block
                                             onClick={handleJobSubmit}>
-                                        Submit
+                                        { isSubmitting ? 'Submitting...' : 'Submit' }
                                     </Button>
                                 </Col>
 
