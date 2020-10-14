@@ -12,7 +12,7 @@ import { FaDownload } from 'react-icons/fa';
 import NucleaseBox from "../Shared/NucleaseBox";
 import nucleases from "../../state/nucleases";
 
-export const Summary = ({ organism={}, jobId, status, summary=[], routeJobDetail, warning, options={}, queuePosition, nuclease }) => {
+export const Summary = ({ organism={}, jobId, status, summary=[], routeJobDetail, warning, options={}, queuePosition, nuclease, excelExported=false }) => {
 
     return <Container fluid>
             <Row>
@@ -48,7 +48,7 @@ export const Summary = ({ organism={}, jobId, status, summary=[], routeJobDetail
             </Row>
             <Row>
                 <Col>
-                    <Button style={{float: 'right', margin: '10px'}} href={"/api/jobs/" + jobId + "/download"} disabled={['Queued', 'Finding pegRNAs'].includes(status)}><FaDownload /> Download</Button>
+                    <Button style={{float: 'right', margin: '10px'}} href={"/api/jobs/" + jobId + "/download"} disabled={!excelExported}><FaDownload /> Download</Button>
                 </Col>
             </Row>
             <Row>
@@ -83,7 +83,7 @@ export const Summary = ({ organism={}, jobId, status, summary=[], routeJobDetail
 
 const mapStateToProps = (state) => {
 
-    let { jobId, status, organism, summary, warning, options, queuePosition='', nuclease } = state.job.summary;
+    let { jobId, status, organism, summary, warning, options, queuePosition='', nuclease, excelExported=false } = state.job.summary;
 
     return {
         organism,
@@ -94,6 +94,7 @@ const mapStateToProps = (state) => {
         options,
         queuePosition,
         nuclease,
+        excelExported,
     }
 };
 
