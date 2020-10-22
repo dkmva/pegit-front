@@ -12,7 +12,7 @@ import { FaDownload } from 'react-icons/fa';
 import NucleaseBox from "../Shared/NucleaseBox";
 import nucleases from "../../state/nucleases";
 
-export const Summary = ({ organism={}, jobId, status, summary=[], routeJobDetail, warning, options={}, queuePosition, nuclease, excelExported=false }) => {
+export const Summary = ({ organism={}, jobId, status, summary=[], routeJobDetail, warning, options={}, queuePosition, nuclease, excelExported=false, designPercent }) => {
 
     return <Container fluid>
             <Row>
@@ -25,7 +25,7 @@ export const Summary = ({ organism={}, jobId, status, summary=[], routeJobDetail
                                 <NucleaseBox nuclease={nuclease} />
                             </Col>
                             <Col style={{borderLeft: '1px solid rgba(0,0,0,.1)'}}>
-                                <JobStatusBox jobId={jobId} jobStatus={status} warning={warning} queuePosition={queuePosition}/>
+                                <JobStatusBox jobId={jobId} jobStatus={status} warning={warning} queuePosition={queuePosition} designPercent={designPercent}/>
                             </Col>
                         </Row>
                         <hr />
@@ -83,7 +83,7 @@ export const Summary = ({ organism={}, jobId, status, summary=[], routeJobDetail
 
 const mapStateToProps = (state) => {
 
-    let { jobId, status, organism, summary, warning, options, queuePosition='', nuclease, excelExported=false } = state.job.summary;
+    let { jobId, status, organism, summary, warning, options, queuePosition='', nuclease, excelExported=false, designPercent=null } = state.job.summary;
 
     return {
         organism,
@@ -95,6 +95,7 @@ const mapStateToProps = (state) => {
         queuePosition,
         nuclease,
         excelExported,
+        designPercent,
     }
 };
 

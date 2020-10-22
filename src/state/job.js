@@ -9,7 +9,8 @@ const REQUESTED_SUMMARY = 'pegit/state/job/REQUESTED_SUMMARY';
 const REQUESTED_SUMMARY_SUCCEEDED = 'pegit/state/job/REQUESTED_SUMMARY_SUCCEEDED';
 const REQUESTED_SUMMARY_FAILED = 'pegit/state/job/REQUESTED_SUMMARY_FAILED';
 
-const ADD_QUEUE_POSITION = 'pegit/state/job/REQUESTED_QUEUE_POSITION';
+const ADD_QUEUE_POSITION = 'pegit/state/job/ADD_QUEUE_POSITION';
+const ADD_DESIGN_PERCENT = 'pegit/state/job/ADD_DESIGN_PERCENT';
 
 const REQUESTED_DETAIL = 'pegit/state/job/REQUESTED_DETAIL';
 const REQUESTED_DETAIL_SUCCEEDED = 'pegit/state/job/REQUESTED_DETAIL_SUCCEEDED';
@@ -51,6 +52,9 @@ export default function reducer(state = INITIAL_STATE, action) {
         case ADD_QUEUE_POSITION:
             return { ...state, summary: { ...state.summary, queuePosition: action.position }, loading: false, error };
 
+        case ADD_DESIGN_PERCENT:
+            return { ...state, summary: { ...state.summary, designPercent: action.percent }, loading: false, error };
+
 
         case REQUESTED_DETAIL:
             return { ...state, loading: true, error: null, detail: state.summary.jobId === action.id ? state.detail : {} };
@@ -87,6 +91,7 @@ const requestSummaryFailure = (error, id) => ({type: REQUESTED_SUMMARY_FAILED, e
 
 
 const addQueuePosition = (position) => ({type: ADD_QUEUE_POSITION, position});
+const addDesignPercent = (percent) => ({type: ADD_DESIGN_PERCENT, percent});
 
 
 const requestDetail = (id, edit) => ({type: REQUESTED_DETAIL, id, edit});
@@ -104,6 +109,8 @@ const submitClinVarFailure = (error) => ({type: SUBMIT_CLINVAR_FAILED, error});
 
 // Side effects
 
+const RELOAD_TIMER = 0.5 * 1000
+
 function* loadSummary (id) {
     let status = 'Queued';
     while( !['Completed', 'Failed'].includes(status) && store.getState().location.payload.jobId === id) {
@@ -116,12 +123,15 @@ function* loadSummary (id) {
             if(status === 'Queued'){
                 response = yield call(api.get, 'jobs/' + id + '/queue_position');
                 yield put(addQueuePosition(response.data.position))
+            } else if (status === 'Finding pegRNAs'){
+                response = yield call(api.get, 'jobs/' + id + '/design_progress');
+                yield put(addDesignPercent(response.data.percent))
             }
         } catch(error) {
             status = "Failed";
             yield put(requestSummaryFailure(error, id));
         }
-        yield delay(2500);
+        yield delay(RELOAD_TIMER);
     }
 }
 
@@ -147,7 +157,7 @@ function* loadDetail (id, edit) {
             status = "Failed";
             yield put(requestDetailFailure(error, id));
         }
-        yield delay(2500);
+        yield delay(RELOAD_TIMER);
     }
 }
 
