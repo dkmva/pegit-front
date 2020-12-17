@@ -11,7 +11,8 @@ const offTargetFormatter = (cell) => (
 );
 
 const primerFormatter = (cell, status) => {
-    return ['Queued', 'Finding pegRNAs', 'Queued for specificity check', 'Checking primer specificity'].includes(status) ? <Loading size={3} count={15} style={{verticalAlign: 'bottom'}}/> : cell.length
+    console.log(cell, status)
+    return ['Queued', 'Finding pegRNAs', 'Queued for specificity check', 'Checking primer specificity'].includes(status) ? <Loading size={3} count={15} style={{verticalAlign: 'bottom'}}/> : cell
 };
 
 const onTargetFormatter = cell => (

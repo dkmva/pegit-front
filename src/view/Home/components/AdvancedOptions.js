@@ -8,8 +8,8 @@ function useToggleOpen(initial) {
     return [open, () => setOpen(!open)];
 }
 
-export default ({changeAdvancedOption, advancedOptions}) => {
-    
+export default ({changeAdvancedOption, advancedOptions, runBowtie, changeRunBowtie, designPrimers, changeDesignPrimers}) => {
+
     const [open, toggleOpen] = useToggleOpen(false);
 
     return <Col>
@@ -22,6 +22,22 @@ export default ({changeAdvancedOption, advancedOptions}) => {
         </span>
         <Collapse in={open}>
             <div id="example-collapse-text">
+                <Row>
+                    <Col>
+                        <Form.Label>Design primers?</Form.Label>
+                        <Form.Check
+                            onChange={changeDesignPrimers}
+                            checked={designPrimers}
+                        />
+                    </Col>
+                    <Col>
+                        <Form.Label>Check specificity?</Form.Label>
+                        <Form.Check
+                            onChange={changeRunBowtie}
+                            checked={runBowtie}
+                        />
+                    </Col>
+                </Row>
                 <b>pegRNAs</b>
                 <Form.Row>
                     <Form.Group as={Col} md={6}>

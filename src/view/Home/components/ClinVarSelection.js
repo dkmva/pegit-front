@@ -23,6 +23,12 @@ export default ({ clinVarResults, handleClinVarSubmit }) => {
                         </dd>
                         <dt className="col-md-6">Canonical SPDI</dt>
                         <dd className="col-md-6">{obj.variationSet[0].canonicalSpdi}</dd>
+                        <dt className="col-md-6">Global minor allele frequency</dt>
+                        <dd className="col-md-6">
+                            { obj.variationSet[0].variationLoc.map((loc, j) => (
+                                <React.Fragment key={obj.accession + '-' + j}>{loc.chr}:{loc.start}-{loc.stop} ({loc.assemblyName})<br/></React.Fragment>
+                            ))}
+                        </dd>
                     </dl>
                 </Col>
                 <Col md={2} className="align-self-center">

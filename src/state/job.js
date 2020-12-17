@@ -43,7 +43,7 @@ export default function reducer(state = INITIAL_STATE, action) {
             return { ...state, loading: true, error: null, summary: state.summary.jobId === action.id ? state.summary : {} };
 
         case REQUESTED_SUMMARY_SUCCEEDED:
-            return { ...state, summary: action.data, loading: false, error: null };
+            return { ...state, summary: { ...action.data, designPercent: state.summary.designPercent }, loading: false, error: null };
 
         case REQUESTED_SUMMARY_FAILED:
             error = action.error || {message: action.error.message };
@@ -109,7 +109,7 @@ const submitClinVarFailure = (error) => ({type: SUBMIT_CLINVAR_FAILED, error});
 
 // Side effects
 
-const RELOAD_TIMER = 0.5 * 1000
+const RELOAD_TIMER = 5 * 1000
 
 function* loadSummary (id) {
     let status = 'Queued';

@@ -36,6 +36,8 @@ const FETCH_ADVANCED_OPTIONS_SUCCEEDED = 'pegit/state/edits/FETCH_ADVANCED_OPTIO
 const FETCH_ADVANCED_OPTIONS_FAILED = 'pegit/state/edits/FETCH_ADVANCED_OPTIONS_FAILED';
 
 const CHANGE_ADVANCED_OPTION = 'pegit/home/CHANGE_ADVANCED_OPTION';
+const CHANGE_BOWTIE = 'pegit/home/CHANGE_BOWTIE';
+const CHANGE_PRIMERS = 'pegit/home/CHANGE_PRIMERS';
 
 
 // Reducer
@@ -46,6 +48,8 @@ const INITIAL_STATE = {
     clinvar: {results: [], searching: false, error: null},
     edits: {validated: [], errors: []},
     addEdit: {submitting: false, error: null},
+    designPrimers: true,
+    runBowtie: true,
     advancedOptions: {
         pbsMinLength: 13,
         pbsMaxLength: 20,
@@ -108,7 +112,7 @@ export default function reducer(state = INITIAL_STATE, action) {
             error = (action.error.response && action.error.response.status === 400) ? action.error.response.data.nonFieldErrors[0] : action.error.message;
             return { ...state, addEdit: { submitting: false, error }};
 
-            case ADD_MULTIPLE_FAILED:
+        case ADD_MULTIPLE_FAILED:
             error = (action.error.response && action.error.response.status === 400) ? action.error.response.data.error : action.error.message;
             alert(error);
             return { ...state, addEdit: { submitting: false, error }};
@@ -130,7 +134,16 @@ export default function reducer(state = INITIAL_STATE, action) {
 
         case CHANGE_ADVANCED_OPTION:
             if(action.value === ''){return state}
+            if(['designPrimers', 'runBowtie'].includes(action.option)){
+                return { ...state, advancedOptions: { ...state.advancedOptions, [action.option]: action.value } };
+            }
             return { ...state, advancedOptions: { ...state.advancedOptions, [action.option]: parseInt(action.value) } };
+
+        case CHANGE_BOWTIE:
+            return { ...state, runBowtie: !state.runBowtie };
+
+        case CHANGE_PRIMERS:
+            return { ...state, designPrimers: !state.designPrimers };
 
         default:
             return state;
@@ -156,6 +169,8 @@ const addEditFailure = (error) => ({type: ADD_EDIT_FAILED, error});
 const removeEdit = (index) => ({type: REMOVE_EDIT, index});
 
 const selectOrganism = (organism) => ({ type: SELECT_ORGANISM, organism });
+const tickRunBowtie = () => ({ type: CHANGE_BOWTIE });
+const tickDesignPrimers = () => ({ type: CHANGE_PRIMERS });
 
 const resetEditList = () => ({ type: RESET_EDIT_LIST });
 
@@ -283,4 +298,4 @@ export { searchGenes, watchSearchGenes,
     requestSearchClinVar, watchSearchClinVar,
     selectGene, clearSearchGenes, selectOrganism,
     removeEdit, resetEditList, watchRequestAddEdit, requestAddEdit, watchRequestAddMultiple, requestAddMultiple,
-    changeAdvancedOption, requestAdvancedOptions, watchRequestAdvancedOptions }
+    changeAdvancedOption, requestAdvancedOptions, watchRequestAdvancedOptions, tickRunBowtie, tickDesignPrimers }
