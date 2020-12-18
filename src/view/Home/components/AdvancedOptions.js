@@ -31,7 +31,7 @@ export default ({changeAdvancedOption, advancedOptions, runBowtie, changeRunBowt
                         />
                     </Col>
                     <Col>
-                        <Form.Label>Check specificity?</Form.Label>
+                        <Form.Label>Check specificity? Disabled if designing more than 25 edits.</Form.Label>
                         <Form.Check
                             onChange={changeRunBowtie}
                             checked={runBowtie}

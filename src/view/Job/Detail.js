@@ -27,8 +27,10 @@ export class PegRNADetail extends Component {
 
     constructor(props) {
         super(props);
+        const { pegRNA } = props;
+        let { nicking= [] } = pegRNA;
         this.state = {
-            selectedTab: 'table',
+            selectedTab: nicking.length > 0 ? 'table' : 'extensions',
         }
     }
 
@@ -169,18 +171,18 @@ export class PegRNADetail extends Component {
                     <Row>
                         <Col>
                             <Nav variant="tabs" activeKey={selectedTab} onSelect={(k) => this.setState({selectedTab: k})} fill>
-                                <Nav.Item>
+                                { nicking.length > 0 && <Nav.Item>
                                     <Nav.Link eventKey='table'>Nicking sgRNAs Table</Nav.Link>
-                                </Nav.Item>
-                                <Nav.Item>
+                                </Nav.Item> }
+                                { nicking.length > 0 && <Nav.Item>
                                     <Nav.Link eventKey='sequence'>Nicking sgRNAs Sequence View</Nav.Link>
-                                </Nav.Item>
-                                <Nav.Item>
+                                </Nav.Item> }
+                                { offtargets[1] && <Nav.Item>
                                     <Nav.Link eventKey='offtargets'>Targets</Nav.Link>
-                                </Nav.Item>
-                                <Nav.Item>
+                                </Nav.Item> }
+                                { alternateExtensions.length > 0 && <Nav.Item>
                                     <Nav.Link eventKey='extensions'>Alternate extensions</Nav.Link>
-                                </Nav.Item>
+                                </Nav.Item> }
                             </Nav>
                             <Card>
                                 {selectedTab === 'table' &&

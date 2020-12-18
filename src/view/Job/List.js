@@ -221,9 +221,9 @@ export class Job extends Component {
                             <Nav.Item>
                                 <Nav.Link eventKey='pegRNAs'>pegRNAs</Nav.Link>
                             </Nav.Item>
-                            <Nav.Item>
+                            {primers.length > 0 && <Nav.Item>
                                 <Nav.Link eventKey='primers'>Sequencing primers</Nav.Link>
-                            </Nav.Item>
+                            </Nav.Item>}
                         </Nav>
                         <Card>
                             <Row>

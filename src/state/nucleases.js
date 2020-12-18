@@ -14,8 +14,8 @@ const SELECT_CLONING_STRATEGY = 'pegit/state/nucleases/SELECT_CLONING_STRATEGY';
 // Reducer
 const INITIAL_STATE = {
     nucleases: [],
-    selectedNuclease: 0,
-    selectedCloningStrategy: 0,
+    selectedNuclease: '',
+    selectedCloningStrategy: '',
     loading: false,
     error: null,
 };
@@ -27,7 +27,7 @@ export default function reducer (state = INITIAL_STATE, action) {
         case FETCH_NUCLEASES:
             return { ...state, nucleases: INITIAL_STATE.nucleases, loading: true, error: null };
         case FETCH_NUCLEASES_SUCCEEDED:
-            return { ...state, nucleases: action.nucleases, selectedNuclease: action.nucleases[0].name, selectedCloningStrategy: action.nucleases[0].cloningStrategies[0], loading: false, error: null };
+            return { ...state, nucleases: action.nucleases, selectedNuclease: action.nucleases[0].name, selectedCloningStrategy: action.nucleases[0].cloningStrategies[0][0], loading: false, error: null };
         case FETCH_NUCLEASES_FAILED:
             error = action.error || {message: action.error.message };
             return { ...state, nucleases: INITIAL_STATE.nucleases, error };
