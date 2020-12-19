@@ -69,12 +69,12 @@ export class PegRNADetail extends Component {
             dataField: 'wtScore',
             text: 'Wild type score',
             formatter: onTargetFormatter,
-            headerFormatter: (column) => Header(column, 'Score based on Doench et. al, 2016, lower is better'),
+            headerFormatter: (column) => Header(column, 'Target score on wild type sequence'),
         }, {
             dataField: 'score',
             text: 'On Target Score',
             formatter: onTargetFormatter,
-            headerFormatter: (column) => Header(column, 'Score based on Doench et. al, 2016, higher is better'),
+            headerFormatter: (column) => Header(column, 'Target score on edited sequence'),
         }, {
             dataField: 'offtargets',
             text: 'Targets',

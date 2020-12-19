@@ -81,7 +81,7 @@ export class Job extends Component {
             dataField: 'score',
             text: 'On Target Score',
             formatter: onTargetFormatter,
-            headerFormatter: (column) => Header(column, 'Score based on Doench et. al, 2016'),
+            headerFormatter: (column) => Header(column, 'On target score'),
         }, {
             dataField: 'offtargets',
             text: 'Targets',
