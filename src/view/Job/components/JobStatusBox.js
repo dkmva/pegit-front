@@ -10,7 +10,7 @@ export default ({jobId, jobStatus, warning, queuePosition, designPercent}) => (
         <dt>Status:</dt>
         <dl>{jobStatus} {!['Failed', 'Completed', 'Not Found'].includes(jobStatus) && <Loading style={{  display:'inline-block', verticalAlign: 'bottom' }} size={3}/>}
                         {queuePosition && <React.Fragment><br/>Position {queuePosition}</React.Fragment>}
-                        { jobStatus === 'Finding pegRNAs' && <ProgressBar now={designPercent} animated={true} label={`${Math.round(designPercent)}%`}/>}
+                        { jobStatus === 'Finding pegRNAs' && <ProgressBar now={designPercent - 5} animated={true} label={`${Math.round(designPercent) - 5}%`}/>}
         </dl>
         { warning && <React.Fragment>
             <dt>Warning:</dt>

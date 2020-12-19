@@ -109,7 +109,7 @@ const submitClinVarFailure = (error) => ({type: SUBMIT_CLINVAR_FAILED, error});
 
 // Side effects
 
-const RELOAD_TIMER = 5 * 1000
+const RELOAD_TIMER = 2 * 1000
 
 function* loadSummary (id) {
     let status = 'Queued';
