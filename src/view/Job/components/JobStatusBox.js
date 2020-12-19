@@ -1,12 +1,15 @@
 import React from 'react';
 import ProgressBar from 'react-bootstrap/ProgressBar'
 
+import Link from 'redux-first-router-link'
+import { ROUTE_JOB_SUMMARY } from 'state/routes';
+
 import { Loading } from "../../Loading";
 
 export default ({jobId, jobStatus, warning, queuePosition, designPercent}) => (
     <React.Fragment>
         <dt>Job Id:</dt>
-        <dl>{jobId}</dl>
+        <dl><Link to={{ type: ROUTE_JOB_SUMMARY, payload: { jobId } }}>{jobId}</Link></dl>
         <dt>Status:</dt>
         <dl>{jobStatus} {!['Failed', 'Completed', 'Not Found'].includes(jobStatus) && <Loading style={{  display:'inline-block', verticalAlign: 'bottom' }} size={3}/>}
                         {queuePosition && <React.Fragment><br/>Position {queuePosition}</React.Fragment>}
