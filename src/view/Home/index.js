@@ -20,6 +20,7 @@ import TranscriptList from "view/Home/components/TranscriptList";
 import ClinVarSelection from "view/Home/components/ClinVarSelection";
 import SelectedEdits from "view/Home/components/SelectedEdits";
 import { LoadingCard } from 'view/Loading';
+import ReactMarkdown from "react-markdown";
 
 export class Home extends React.Component {
 
@@ -181,7 +182,19 @@ export class Home extends React.Component {
                             <Form>
                                 <Row>
                                     <Col md={5}>
-                                        <label>Genome
+                                        <label>Genome <OverlayTrigger
+                                            placement="right"
+                                            overlay={
+                                                <Popover id="nucleaseTooltip">
+                                                    <Popover.Content>
+                                                        If your desired organism is not available, you can select any organism and paste custom sequences for your desired edits. <br/>
+                                                        Check the FAQ if you would like us to add a specific organism
+                                                    </Popover.Content>
+                                                </Popover>
+                                            }
+                                        >
+                                            <FaRegQuestionCircle/>
+                                        </OverlayTrigger>
                                             <Typeahead
                                                 id="organism"
                                                 clearButton
@@ -237,7 +250,7 @@ export class Home extends React.Component {
                                                     placement="right"
                                                     overlay={
                                                         <Popover id="editTooltip1">
-                                                            <Popover.Content>Input acustom DNA sequence. Use FASTA format to name the sequence.<br/>
+                                                            <Popover.Content>Input a custom DNA sequence. Use FASTA format to name the sequence.<br/>
                                                                 Or enter genetic coordinates in the format "CHROMOSOME:START-END"</Popover.Content>
                                                         </Popover>
                                                     }

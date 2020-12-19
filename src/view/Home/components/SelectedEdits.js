@@ -37,26 +37,12 @@ export default ({ edits, invalid, editColumns, removeEdit, resetEditList, select
                     props => (
                         <Card body>
                             <Row>
-                                <Col md={2}>
-                                    <Form.Label>&nbsp;</Form.Label>
-                                    <Button variant="link" style={{color: 'black', fontWeight: 'bold'}}
-                                            onClick={() => resetEditList()} block>
-                                        <FaUndo /> Clear and reset
-                                    </Button>
-                                </Col>
-                                <Col md={2}>
-                                    <Form.Label>&nbsp;</Form.Label>
-                                    <Button variant="outline-success " disabled={edits.length < 1 || isSubmitting} block
-                                            onClick={handleJobSubmit}>
-                                        { isSubmitting ? 'Submitting...' : 'Submit' }
-                                    </Button>
-                                </Col>
 
-                                <Col md={2}>
+                                <Col md={4}>
                                     <Form.Label>Nuclease <OverlayTrigger
                                         placement="right"
                                         overlay={
-                                            <Popover id="editTooltip2">
+                                            <Popover id="nucleaseTooltip">
                                                 <Popover.Title>{nucleaseObject.name}</Popover.Title>
                                                 <Popover.Content><ReactMarkdown
                                                     source={nucleaseObject.docstring}/></Popover.Content>
@@ -69,11 +55,11 @@ export default ({ edits, invalid, editColumns, removeEdit, resetEditList, select
                                         { nucleases.map((n) => <option key={n.name} value={n.name}>{n.name}</option>) }
                                     </Form.Control>
                                 </Col>
-                                <Col md={2}>
-                                    <Form.Label>Cloning <OverlayTrigger
+                                <Col md={4}>
+                                    <Form.Label>Cloning {nucleaseObject.cloningStrategies.length > 0 && <OverlayTrigger
                                         placement="right"
                                         overlay={
-                                            <Popover id="editTooltip1">
+                                            <Popover id="cloningTooltip1">
                                                 <Popover.Content>Click me for help</Popover.Content>
                                             </Popover>
                                         }
@@ -83,21 +69,36 @@ export default ({ edits, invalid, editColumns, removeEdit, resetEditList, select
                                 placement="right"
                                 trigger="click"
                                 overlay={
-                                    <Popover id="editTooltip2">
-                                        <Popover.Title>{nucleaseObject.cloningStrategies.length ? nucleaseObject.cloningStrategies.find(c => c[0] === selectedCloningStrategy)[0] : ''}</Popover.Title>
+                                    <Popover id="cloningTooltip2">
+                                        <Popover.Title>{ nucleaseObject.cloningStrategies.find(c => c[0] === selectedCloningStrategy)[0] }</Popover.Title>
                                         <Popover.Content><ReactMarkdown
-                                            source={nucleaseObject.cloningStrategies.length ? nucleaseObject.cloningStrategies.find(c => c[0] === selectedCloningStrategy)[1] : ''}/></Popover.Content>
+                                            source={ nucleaseObject.cloningStrategies.find(c => c[0] === selectedCloningStrategy)[1] }/></Popover.Content>
                                     </Popover>
                                 }
                             >
                                 <FaRegQuestionCircle/>
                             </OverlayTrigger>
                         </span>
-                                    </OverlayTrigger></Form.Label>
+                                    </OverlayTrigger>}</Form.Label>
                                     <Form.Control as="select" value={selectedCloningStrategy} onChange={selectCloningStrategy}>
                                         { nucleaseObject.cloningStrategies.map(s => <option key={s} value={s[0]}>{s[0]}</option>) }
                                     </Form.Control>
                                 </Col>
+                                <Col md={4}>
+                                    <Form.Label>&nbsp;</Form.Label>
+                                    <Button variant="outline-success " disabled={edits.length < 1 || isSubmitting} block
+                                            onClick={handleJobSubmit}>
+                                        { isSubmitting ? 'Submitting...' : 'Submit' }
+                                    </Button>
+                                </Col>
+                                <Col md={2}>
+                                    <Form.Label>&nbsp;</Form.Label>
+                                    <Button variant="link" style={{color: 'black', fontWeight: 'bold'}}
+                                            onClick={() => resetEditList()} block>
+                                        <FaUndo /> Clear and reset
+                                    </Button>
+                                </Col>
+                                <Col md={6} />
                                 <Col md={2}>
                                     <Form.Label>&nbsp;</Form.Label>
                                     <Button variant="link" style={{color: 'black', fontWeight: 'bold'}}
@@ -125,15 +126,7 @@ export default ({ edits, invalid, editColumns, removeEdit, resetEditList, select
                                                  changeDesignPrimers={changeDesignPrimers}/>
                             </Row>
                             <br/>
-                            <BootstrapTable
-                                { ...props.baseProps }
-                                bootstrap4={true}
-                                bordered={false}
-                                striped
-                                hover
-                                height='60vh'
-                            />
-                                { invalid.length > 0 && <BootstrapTable
+                            { invalid.length > 0 && <BootstrapTable
                                 keyField='idx'
                                 data={invalid.map((e, i) => ({...e, idx: i}))}
                                 rowClasses="table-danger"
@@ -144,6 +137,14 @@ export default ({ edits, invalid, editColumns, removeEdit, resetEditList, select
                                 hover
                                 height='30vh'
                             /> }
+                            <BootstrapTable
+                                { ...props.baseProps }
+                                bootstrap4={true}
+                                bordered={false}
+                                striped
+                                hover
+                                height='60vh'
+                            />
                         </Card>
                     )
                 }

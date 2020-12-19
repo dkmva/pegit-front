@@ -19,7 +19,7 @@ import { LoadingCard } from 'view/Loading';
 import { IconContext } from "react-icons";
 import { FaRegCheckCircle, FaRegTimesCircle, FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 
-import { Header, onTargetFormatter, offTargetFormatter, spacerURL, strandFormatter } from './components/formatters'
+import { Header, onTargetFormatter, offTargetFormatter, spacerURL, strandFormatter, primerFormatter } from './components/formatters'
 import { pegRNASpacerPosition, pegRNAExtensionPosition } from "./functions/positionCalculations";
 import NucleaseBox from "../Shared/NucleaseBox";
 
@@ -114,7 +114,7 @@ export class Job extends Component {
             }, {
                 dataField: 'productCount',
                 text: 'Products',
-                //formatter: (cell) => primerFormatter(cell, status),
+                formatter: (cell) => primerFormatter(cell, status),
             }
         ];
 
