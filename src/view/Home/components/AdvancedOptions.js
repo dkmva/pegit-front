@@ -8,7 +8,12 @@ function useToggleOpen(initial) {
     return [open, () => setOpen(!open)];
 }
 
-export default ({changeAdvancedOption, advancedOptions, runBowtie, changeRunBowtie, designPrimers, changeDesignPrimers}) => {
+export default ({   changeAdvancedOption, advancedOptions,
+                    changeNucleaseOption, nucleaseOptions,
+                    changeCloningOption, cloningOptions,
+                    changeDesignOption, designOptions,
+                    runBowtie, changeRunBowtie,
+                    designPrimers, changeDesignPrimers}) => {
 
     const [open, toggleOpen] = useToggleOpen(false);
 
@@ -22,7 +27,8 @@ export default ({changeAdvancedOption, advancedOptions, runBowtie, changeRunBowt
         </span>
         <Collapse in={open}>
             <div id="example-collapse-text">
-                <Row>
+
+                <Form.Row>
                     <Col>
                         <Form.Label>Design primers?</Form.Label>
                         <Form.Check
@@ -37,7 +43,46 @@ export default ({changeAdvancedOption, advancedOptions, runBowtie, changeRunBowt
                             checked={runBowtie}
                         />
                     </Col>
-                </Row>
+                </Form.Row>
+
+                { [[nucleaseOptions, 'Nuclease options', changeNucleaseOption],
+                   [cloningOptions, 'Cloning options', changeCloningOption]].map(([options, text, changeFn]) => (<>
+                    { Object.keys(options).length > 0 && <b>{text}</b> }
+                    <Form.Row>
+                        {
+                            Object.entries(options).map(([k, v]) => <Form.Group key={k} as={Col}>
+                                <Form.Label>{k} <OverlayTrigger
+                                    placement="right"
+                                    overlay={
+                                        <Popover id="pbsTooltip">
+                                            <Popover.Content>
+                                                {v.help}
+                                            </Popover.Content>
+                                        </Popover>
+                                    }
+                                >
+                                    <FaRegQuestionCircle/>
+                                </OverlayTrigger></Form.Label>
+                                { v.type === 'checkbox' ?
+                                    <Form.Control
+                                        key={k}
+                                        onChange={(e) => (changeFn(k, e.target.checked))}
+                                        type={v.type}
+                                        checked={v.value}
+                                    >
+                                    </Form.Control>
+                                    :
+                                    <Form.Control
+                                        key={k}
+                                        onChange={(e) => (changeFn(k, e.target.value))}
+                                        pattern={v.pattern}
+                                        type={v.type}
+                                        value={v.value}
+                                    /> }
+                            </Form.Group>)
+                        }
+                    </Form.Row>
+                </>))}
                 <b>pegRNAs</b>
                 <Form.Row>
                     <Form.Group as={Col} md={6}>
@@ -144,6 +189,9 @@ export default ({changeAdvancedOption, advancedOptions, runBowtie, changeRunBowt
                             </Col>
                         </Row>
                     </Form.Group>
+                </Form.Row>
+                <b>PCR</b>
+                <Form.Row>
                     <Form.Group as={Col} md={12}>
                         <Form.Label>Primers <OverlayTrigger
                             placement="right"

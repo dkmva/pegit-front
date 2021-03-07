@@ -12,7 +12,7 @@ import { searchGenes, requestSearchClinVar, clearSearchGenes, selectOrganism,
          removeEdit, resetEditList, requestAddEdit,requestAddMultiple, changeAdvancedOption, tickRunBowtie, tickDesignPrimers } from "state/home";
 import { requestGene } from "state/gene";
 import { submitJob, submitClinVar } from "state/job";
-import { selectNuclease, selectCloningStrategy } from "state/nucleases";
+import { selectNuclease, selectCloningStrategy, changeNucleaseOption, changeCloningOption } from "state/nucleases";
 import { routeGene, routeTranscript, routeCustomSequence, routeRegion } from 'state/routes';
 
 import LogoRow from "view/Home/components/LogoRow";
@@ -20,7 +20,6 @@ import TranscriptList from "view/Home/components/TranscriptList";
 import ClinVarSelection from "view/Home/components/ClinVarSelection";
 import SelectedEdits from "view/Home/components/SelectedEdits";
 import { LoadingCard } from 'view/Loading';
-import ReactMarkdown from "react-markdown";
 
 export class Home extends React.Component {
 
@@ -89,12 +88,16 @@ export class Home extends React.Component {
         }
     };
 
-    _handleJobSubmit = () => {
-        const { selectedOrganism, edits, submitJob, advancedOptions, selectedNuclease, selectedCloningStrategy, runBowtie, designPrimers } = this.props;
+    _handleJobSubmit = (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        const { selectedOrganism, edits, submitJob, advancedOptions, nucleaseOptions, cloningOptions, selectedNuclease, selectedCloningStrategy, runBowtie, designPrimers } = this.props;
         submitJob({
             organism: selectedOrganism.id,
             edits,
             advancedOptions,
+            nucleaseOptions: Object.fromEntries(Object.entries(nucleaseOptions).map(([k, v]) => [k, v.value])),
+            cloningOptions: Object.fromEntries(Object.entries(cloningOptions).map(([k, v]) => [k, v.value])),
             nuclease: selectedNuclease,
             cloningStrategy: selectedCloningStrategy,
             runBowtie,
@@ -158,7 +161,11 @@ export class Home extends React.Component {
             gene: selectedGene, geneLoading,
             edits, invalid, nucleases, selectedNuclease, selectNuclease, selectedCloningStrategy, selectCloningStrategy,
             removeEdit, resetEditList, isParsing, isSubmitting,
-            advancedOptions, changeAdvancedOption, designPrimers, runBowtie, changeDesignPrimers, changeRunBowtie } = this.props;
+            advancedOptions, changeAdvancedOption,
+            nucleaseOptions, changeNucleaseOption,
+            cloningOptions, changeCloningOption,
+            designPrimers, changeDesignPrimers,
+            runBowtie, changeRunBowtie } = this.props;
         const { searching: clinVarSearching, results: clinVarResults } = this.props.clinvar;
         const { query, pasteSequence, dnaSeq, clinVarQuery, dnaSeqInvalid } = this.state;
         let { showSelectedGene } = this.state;
@@ -170,7 +177,7 @@ export class Home extends React.Component {
         let selectRegion = false;
         if (dnaSeq.match(/^.+:\d+-\d+/)) {
             selectRegion = true;
-        };
+        }
 
 
         return (
@@ -353,12 +360,11 @@ export class Home extends React.Component {
                             removeEdit={removeEdit}
                             resetEditList={resetEditList}
                             selectedOrganism={selectedOrganism}
-                            changeAdvancedOption={changeAdvancedOption}
-                            advancedOptions={advancedOptions}
-                            runBowtie={runBowtie}
-                            changeRunBowtie={changeRunBowtie}
-                            designPrimers={designPrimers}
-                            changeDesignPrimers={changeDesignPrimers}
+                            advancedOptions={advancedOptions} changeAdvancedOption={changeAdvancedOption}
+                            nucleaseOptions={nucleaseOptions} changeNucleaseOption={changeNucleaseOption}
+                            cloningOptions={cloningOptions} changeCloningOption={changeCloningOption}
+                            runBowtie={runBowtie} changeRunBowtie={changeRunBowtie}
+                            designPrimers={designPrimers} changeDesignPrimers={changeDesignPrimers}
                             handleJobSubmit={clinVar ? this._handleClinVarSubmit : this._handleJobSubmit}
                             parseImportFile={this._parseImportFile}
                             isParsing={isParsing}
@@ -379,7 +385,7 @@ export class Home extends React.Component {
 const mapStateToProps = (state) => {
     let { values: organisms, loading: organismsLoading } = state.organisms;
     let { gene, loading: geneLoading } = state.gene;
-    let { nucleases, selectedNuclease, selectedCloningStrategy } = state.nucleases;
+    let { nucleases, selectedNuclease, selectedCloningStrategy, nucleaseOptions, cloningOptions } = state.nucleases;
     let { clinvar, edits, genes, selectedOrganism, advancedOptions, addEdit, designPrimers, runBowtie } = state.home;
 
     return {
@@ -393,6 +399,8 @@ const mapStateToProps = (state) => {
         isParsing: addEdit.submitting,
         isSubmitting: state.job.submitting,
         nucleases,
+        nucleaseOptions,
+        cloningOptions,
         organisms,
         organismsLoading,
         selectedNuclease,
@@ -421,10 +429,12 @@ const mapDispatchToProps = (dispatch) => {
         requestAddEdit: (edit) => dispatch(requestAddEdit(edit)),
         requestAddMultiple: (edits) => dispatch(requestAddMultiple(edits)),
         changeAdvancedOption: (option, value) => dispatch(changeAdvancedOption(option, value)),
+        changeNucleaseOption: (option, value) => dispatch(changeNucleaseOption(option, value)),
+        changeCloningOption: (option, value) => dispatch(changeCloningOption(option, value)),
         selectNuclease: (e) => dispatch(selectNuclease(e.target.value)),
         selectCloningStrategy: (e) => dispatch(selectCloningStrategy(e.target.value)),
         changeRunBowtie: () => dispatch(tickRunBowtie()),
-        changeDesignPrimers: (e) => dispatch(tickDesignPrimers()),
+        changeDesignPrimers: () => dispatch(tickDesignPrimers()),
     }
 };
 

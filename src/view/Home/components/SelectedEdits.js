@@ -9,11 +9,17 @@ import AdvancedOptions from "./AdvancedOptions";
 import ReactMarkdown from "react-markdown";
 
 
-export default ({ edits, invalid, editColumns, removeEdit, resetEditList, selectedOrganism, handleJobSubmit, parseImportFile, changeAdvancedOption, advancedOptions, isParsing, nucleases, selectedNuclease, selectNuclease, isSubmitting, selectedCloningStrategy, selectCloningStrategy, runBowtie, changeRunBowtie, designPrimers, changeDesignPrimers }) => {
+export default ({ edits, invalid, editColumns, removeEdit, resetEditList, selectedOrganism, handleJobSubmit, parseImportFile, isParsing, nucleases, selectedNuclease, selectNuclease, isSubmitting,
+                    changeAdvancedOption, advancedOptions,
+                    changeNucleaseOption, nucleaseOptions,
+                    changeCloningOption, cloningOptions,
+                    selectedCloningStrategy, selectCloningStrategy,
+                    runBowtie, changeRunBowtie,
+                    designPrimers, changeDesignPrimers }) => {
 
-    let nucleaseObject = {name: '', cloningStrategies: []};
-    if(nucleases.length) {
-        nucleaseObject = nucleases.find(n => n.name === selectedNuclease);
+    let nucleaseObject = nucleases.find(n => n.name === selectedNuclease);
+    if(nucleaseObject === undefined){
+        nucleaseObject = {name: '', cloningStrategies: []};
     }
 
     return <Row>
@@ -35,9 +41,9 @@ export default ({ edits, invalid, editColumns, removeEdit, resetEditList, select
             >
                 {
                     props => (
+                        <Form onSubmit={handleJobSubmit}>
                         <Card body>
                             <Row>
-
                                 <Col md={4}>
                                     <Form.Label>Nuclease <OverlayTrigger
                                         placement="right"
@@ -70,9 +76,9 @@ export default ({ edits, invalid, editColumns, removeEdit, resetEditList, select
                                 trigger="click"
                                 overlay={
                                     <Popover id="cloningTooltip2">
-                                        <Popover.Title>{ nucleaseObject.cloningStrategies.find(c => c[0] === selectedCloningStrategy)[0] }</Popover.Title>
+                                        <Popover.Title>{ selectedCloningStrategy && nucleaseObject.cloningStrategies.find(c => c[0] === selectedCloningStrategy)[0] }</Popover.Title>
                                         <Popover.Content><ReactMarkdown
-                                            source={ nucleaseObject.cloningStrategies.find(c => c[0] === selectedCloningStrategy)[1] }/></Popover.Content>
+                                            source={ selectedCloningStrategy && nucleaseObject.cloningStrategies.find(c => c[0] === selectedCloningStrategy)[1] }/></Popover.Content>
                                     </Popover>
                                 }
                             >
@@ -87,7 +93,7 @@ export default ({ edits, invalid, editColumns, removeEdit, resetEditList, select
                                 <Col md={4}>
                                     <Form.Label>&nbsp;</Form.Label>
                                     <Button variant="outline-success " disabled={edits.length < 1 || isSubmitting} block
-                                            onClick={handleJobSubmit}>
+                                            type="submit">
                                         { isSubmitting ? 'Submitting...' : 'Submit' }
                                     </Button>
                                 </Col>
@@ -120,10 +126,11 @@ export default ({ edits, invalid, editColumns, removeEdit, resetEditList, select
                             </Row>
                             <br/>
                             <Row>
-                                <AdvancedOptions changeAdvancedOption={changeAdvancedOption} advancedOptions={advancedOptions} runBowtie={runBowtie}
-                                                 changeRunBowtie={changeRunBowtie}
-                                                 designPrimers={designPrimers}
-                                                 changeDesignPrimers={changeDesignPrimers}/>
+                                <AdvancedOptions advancedOptions={advancedOptions} changeAdvancedOption={changeAdvancedOption}
+                                                 nucleaseOptions={nucleaseOptions} changeNucleaseOption={changeNucleaseOption}
+                                                 cloningOptions={cloningOptions} changeCloningOption={changeCloningOption}
+                                                 runBowtie={runBowtie} changeRunBowtie={changeRunBowtie}
+                                                 designPrimers={designPrimers} changeDesignPrimers={changeDesignPrimers}/>
                             </Row>
                             <br/>
                             { invalid.length > 0 && <BootstrapTable
@@ -146,6 +153,7 @@ export default ({ edits, invalid, editColumns, removeEdit, resetEditList, select
                                 height='60vh'
                             />
                         </Card>
+                        </Form>
                     )
                 }
             </ToolkitProvider>
