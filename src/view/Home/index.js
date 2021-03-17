@@ -105,11 +105,15 @@ export class Home extends React.Component {
         })
     };
 
-    _handleClinVarSubmit = () => {
-        const { edits, submitClinVar, advancedOptions, selectedNuclease, selectedCloningStrategy, runBowtie, designPrimers } = this.props;
+    _handleClinVarSubmit = (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        const { edits, submitClinVar, advancedOptions, nucleaseOptions, cloningOptions, selectedNuclease, selectedCloningStrategy, runBowtie, designPrimers } = this.props;
         submitClinVar({
             edits,
             advancedOptions,
+            nucleaseOptions: Object.fromEntries(Object.entries(nucleaseOptions).map(([k, v]) => [k, v.value])),
+            cloningOptions: Object.fromEntries(Object.entries(cloningOptions).map(([k, v]) => [k, v.value])),
             nuclease: selectedNuclease,
             cloningStrategy: selectedCloningStrategy,
             runBowtie,
