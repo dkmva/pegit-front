@@ -91,9 +91,8 @@ export class Home extends React.Component {
     _handleJobSubmit = (event) => {
         event.preventDefault();
         event.stopPropagation();
-        const { selectedOrganism, edits, submitJob, advancedOptions, nucleaseOptions, cloningOptions, selectedNuclease, selectedCloningStrategy, runBowtie, designPrimers } = this.props;
-        submitJob({
-            organism: selectedOrganism.id,
+        const { selectedOrganism, edits, submitJob, submitClinVar, advancedOptions, nucleaseOptions, cloningOptions, selectedNuclease, selectedCloningStrategy, runBowtie, designPrimers } = this.props;
+        let jobData = {
             edits,
             advancedOptions,
             nucleaseOptions: Object.fromEntries(Object.entries(nucleaseOptions).map(([k, v]) => [k, v.value])),
@@ -102,23 +101,14 @@ export class Home extends React.Component {
             cloningStrategy: selectedCloningStrategy,
             runBowtie,
             designPrimers,
-        })
-    };
+        }
+        if(selectedOrganism.name === 'ClinVar') {
+            submitClinVar(jobData)
+        } else {
+            jobData.organism = selectedOrganism.id;
+            submitJob(jobData);
+        }
 
-    _handleClinVarSubmit = (event) => {
-        event.preventDefault();
-        event.stopPropagation();
-        const { edits, submitClinVar, advancedOptions, nucleaseOptions, cloningOptions, selectedNuclease, selectedCloningStrategy, runBowtie, designPrimers } = this.props;
-        submitClinVar({
-            edits,
-            advancedOptions,
-            nucleaseOptions: Object.fromEntries(Object.entries(nucleaseOptions).map(([k, v]) => [k, v.value])),
-            cloningOptions: Object.fromEntries(Object.entries(cloningOptions).map(([k, v]) => [k, v.value])),
-            nuclease: selectedNuclease,
-            cloningStrategy: selectedCloningStrategy,
-            runBowtie,
-            designPrimers,
-        })
     };
 
     _parseImportFile = (e) => {
@@ -369,7 +359,7 @@ export class Home extends React.Component {
                             cloningOptions={cloningOptions} changeCloningOption={changeCloningOption}
                             runBowtie={runBowtie} changeRunBowtie={changeRunBowtie}
                             designPrimers={designPrimers} changeDesignPrimers={changeDesignPrimers}
-                            handleJobSubmit={clinVar ? this._handleClinVarSubmit : this._handleJobSubmit}
+                            handleJobSubmit={this._handleJobSubmit}
                             parseImportFile={this._parseImportFile}
                             isParsing={isParsing}
                             isSubmitting={isSubmitting}
