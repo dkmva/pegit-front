@@ -10,7 +10,7 @@ import { routeJobDetail } from 'state/routes';
 
 import { FaDownload } from 'react-icons/fa';
 import NucleaseBox from "../Shared/NucleaseBox";
-import nucleases from "../../state/nucleases";
+import { OligosBox } from "./components/OligosBox";
 
 export const Summary = ({ organism={}, jobId, status, summary=[], routeJobDetail, warning, options={}, queuePosition, nuclease, excelExported=false, designPercent }) => {
 
@@ -65,6 +65,9 @@ export const Summary = ({ organism={}, jobId, status, summary=[], routeJobDetail
                                         {dataField: 'edit', text: 'Edit'},
                                         {dataField: 'options', text: 'Options'},
                                         {dataField: 'pegRNAs', text: '# pegRNAs'},
+                                        {dataField: 'best', text: 'Recommended design', formatter: (cell, row) => {
+                                            return <OligosBox pegRNA={JSON.parse(cell)} position="left" />;
+                                            }},
                                         {dataField: 'detail', isDummyField: true, text: '', formatter: (cell, row) => (
                                                 <Button variant="outline-secondary" size="sm" onClick={ () => routeJobDetail(jobId, 'edit' + row.idx ) }>Details</Button> )}] }
                                     bootstrap4={true}
