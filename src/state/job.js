@@ -1,6 +1,6 @@
 import *  as api from 'api'
 import { call, put, takeLatest, delay } from "@redux-saga/core/effects";
-import { routeJobSummary } from 'state/routes';
+import { routeJobSummary, routeJobDetail } from 'state/routes';
 import { store } from "configureStore";
 
 // Actions
@@ -119,14 +119,18 @@ function* loadSummary (id) {
             let response = yield call(api.get, 'jobs/' + id + '/');
             yield put(requestSummarySuccess(response.data));
 
+            if(response.data.edits.length === 1){
+                yield put(routeJobDetail(response.data.jobId, 'edit0'));
+            }
+
             status = response.data.status;
             if(status === 'Queued'){
                 response = yield call(api.get, 'jobs/' + id + '/queue_position');
                 yield put(addQueuePosition(response.data.position))
-            } else if (status === 'Finding pegRNAs'){
-                response = yield call(api.get, 'jobs/' + id + '/design_progress');
+            }/* else if (status === 'Finding pegRNAs'){
+                //response = yield call(api.get, 'jobs/' + id + '/design_progress');
                 yield put(addDesignPercent(response.data.percent))
-            }
+            }*/
         } catch(error) {
             status = "Failed";
             yield put(requestSummaryFailure(error, id));

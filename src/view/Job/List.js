@@ -36,7 +36,7 @@ export class Job extends Component {
 
         const { jobId, pegRNAs, organism, edits=[], edit, status='Loading', queuePosition, editOptions, sequenceType,
                 sequenceObject, warning, minPos, primers, routeJobDetail, routeJobSummary,
-                chosenEdit, visualSequence, translations, nuclease } = this.props;
+                chosenEdit, visualSequence, translations, nuclease, designPercent } = this.props;
         const { annotations } = sequenceObject;
         const { selectedTab } = this.state;
         const chosenEditIndex = edits.map((e, i) => 'edit' + i).indexOf(chosenEdit);
@@ -144,7 +144,7 @@ export class Job extends Component {
 
         return (
             <Container fluid>
-                <Row>
+                {edits.length !== 1 && <><Row>
                     <Col md={3}>
                         <Button variant="outline-dark" onClick={() => routeJobSummary(jobId)}>
                             <FaArrowLeft />Back to edit list
@@ -171,7 +171,7 @@ export class Job extends Component {
                         </ButtonGroup>
                     </Col>
                 </Row>
-                <br/>
+                <br/></>}
                 <Row>
                     <Col>
                         <Card body>
@@ -184,7 +184,7 @@ export class Job extends Component {
                                     <NucleaseBox nuclease={nuclease} />
                                 </Col>
                                 <Col style={{borderLeft: '1px solid rgba(0,0,0,.1)'}}>
-                                    <JobStatusBox jobId={jobId} jobStatus={status} warning={warning} queuePosition={queuePosition}/>
+                                    <JobStatusBox jobId={jobId} jobStatus={status} warning={warning} queuePosition={queuePosition} designPercent={designPercent}/>
                                 </Col>
                                 <Col style={{borderLeft: '1px solid rgba(0,0,0,.1)'}}>
                                     <EditBox edit={edit} editOptions={editOptions}/>
@@ -258,11 +258,12 @@ export class Job extends Component {
 
 const mapStateToProps = (state) => {
 
-    let { jobId, organism, edits, status, nuclease } = state.job.summary;
+    let { jobId, organism, edits, status, nuclease, summary } = state.job.summary;
     organism = organism ? organism : {name: undefined, assembly: undefined, source: undefined };
     let { pegRNAs=[], primers=[], edit, queuePosition, warning, options='', sequenceType, start, nickingOffset, visualSequence, translations=[] } = state.job.detail;
 
     let {sequenceObject = {id: 'undefined', name: 'undefined', source: 'undefined', sequence: ''}} = state.job.detail;
+    let designPercent = summary.length / edits.length * 100;
 
     return {
         organism,
@@ -277,6 +278,7 @@ const mapStateToProps = (state) => {
         translations: translations.map(t => ({...t, direction: 1})),
         sequenceType,
         primers,
+        designPercent,
         queuePosition,
         edits,
         minPos: start + nickingOffset,

@@ -86,7 +86,8 @@ export const Summary = ({ organism={}, jobId, status, summary=[], routeJobDetail
 
 const mapStateToProps = (state) => {
 
-    let { jobId, status, organism, summary, warning, options, queuePosition='', nuclease, excelExported=false, designPercent=null } = state.job.summary;
+    let { jobId, status, organism, edits=[], summary=[], warning, options, queuePosition='', nuclease, excelExported=false } = state.job.summary;
+    let designPercent = (summary.length / edits.length ) * 100;
 
     return {
         organism,
