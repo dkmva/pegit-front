@@ -46,7 +46,7 @@ export default ({   changeAdvancedOption, advancedOptions,
                 </Form.Row>
 
                 { [[nucleaseOptions, 'Nuclease options', changeNucleaseOption],
-                   [cloningOptions, 'Cloning options', changeCloningOption]].map(([options, text, changeFn]) => (<>
+                   [cloningOptions, 'Cloning options', changeCloningOption]].map(([options, text, changeFn]) => (<div key={text}>
                     { Object.keys(options).length > 0 && <b>{text}</b> }
                     <Form.Row>
                         {
@@ -82,7 +82,7 @@ export default ({   changeAdvancedOption, advancedOptions,
                             </Form.Group>)
                         }
                     </Form.Row>
-                </>))}
+                </div >))}
                 <b>pegRNAs</b>
                 <Form.Row>
                     <Form.Group as={Col} md={6}>
