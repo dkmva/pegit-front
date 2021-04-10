@@ -9,7 +9,7 @@ import { AsyncTypeahead, Typeahead, Highlighter } from 'react-bootstrap-typeahea
 
 import { setCustomSequence } from "state/customsequence";
 import { searchGenes, requestSearchClinVar, clearSearchGenes, selectOrganism,
-         removeEdit, resetEditList, requestAddEdit,requestAddMultiple, changeAdvancedOption, tickRunBowtie, tickDesignPrimers } from "state/home";
+         removeEdit, resetEditList, requestAddEdit,requestAddMultiple, changeAdvancedOption, tickRunBowtie, tickDesignPrimers, changeProjectName } from "state/home";
 import { requestGene } from "state/gene";
 import { submitJob, submitClinVar } from "state/job";
 import { selectNuclease, selectCloningStrategy, changeNucleaseOption, changeCloningOption } from "state/nucleases";
@@ -91,10 +91,14 @@ export class Home extends React.Component {
     _handleJobSubmit = (event) => {
         event.preventDefault();
         event.stopPropagation();
-        const { selectedOrganism, edits, submitJob, submitClinVar, advancedOptions, nucleaseOptions, cloningOptions, selectedNuclease, selectedCloningStrategy, runBowtie, designPrimers } = this.props;
+        const { selectedOrganism, edits, submitJob, submitClinVar,
+            advancedOptions, nucleaseOptions, cloningOptions,
+            selectedNuclease, selectedCloningStrategy,
+            runBowtie, designPrimers, projectName } = this.props;
         let jobData = {
             edits,
             advancedOptions,
+            jobName: projectName,
             nucleaseOptions: Object.fromEntries(Object.entries(nucleaseOptions).map(([k, v]) => [k, v.value])),
             cloningOptions: Object.fromEntries(Object.entries(cloningOptions).map(([k, v]) => [k, v.value])),
             nuclease: selectedNuclease,
@@ -159,7 +163,8 @@ export class Home extends React.Component {
             nucleaseOptions, changeNucleaseOption,
             cloningOptions, changeCloningOption,
             designPrimers, changeDesignPrimers,
-            runBowtie, changeRunBowtie } = this.props;
+            runBowtie, changeRunBowtie,
+            projectName, changeProjectName } = this.props;
         const { searching: clinVarSearching, results: clinVarResults } = this.props.clinvar;
         const { query, pasteSequence, dnaSeq, clinVarQuery, dnaSeqInvalid } = this.state;
         let { showSelectedGene } = this.state;
@@ -368,6 +373,8 @@ export class Home extends React.Component {
                             selectNuclease={selectNuclease}
                             selectedCloningStrategy={selectedCloningStrategy}
                             selectCloningStrategy={selectCloningStrategy}
+                            projectName={projectName}
+                            changeProjectName={changeProjectName}
                         />
                     </Col>
                 </Row>
@@ -380,7 +387,7 @@ const mapStateToProps = (state) => {
     let { values: organisms, loading: organismsLoading } = state.organisms;
     let { gene, loading: geneLoading } = state.gene;
     let { nucleases, selectedNuclease, selectedCloningStrategy, nucleaseOptions, cloningOptions } = state.nucleases;
-    let { clinvar, edits, genes, selectedOrganism, advancedOptions, addEdit, designPrimers, runBowtie } = state.home;
+    let { clinvar, edits, genes, selectedOrganism, advancedOptions, addEdit, designPrimers, runBowtie, projectName } = state.home;
 
     return {
         advancedOptions,
@@ -402,6 +409,7 @@ const mapStateToProps = (state) => {
         selectedCloningStrategy,
         runBowtie,
         designPrimers,
+        projectName,
     }
 };
 
@@ -429,6 +437,7 @@ const mapDispatchToProps = (dispatch) => {
         selectCloningStrategy: (e) => dispatch(selectCloningStrategy(e.target.value)),
         changeRunBowtie: () => dispatch(tickRunBowtie()),
         changeDesignPrimers: () => dispatch(tickDesignPrimers()),
+        changeProjectName: (e) => dispatch(changeProjectName(e.target.value)),
     }
 };
 

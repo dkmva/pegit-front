@@ -15,7 +15,8 @@ export default ({ edits, invalid, editColumns, removeEdit, resetEditList, select
                     changeCloningOption, cloningOptions,
                     selectedCloningStrategy, selectCloningStrategy,
                     runBowtie, changeRunBowtie,
-                    designPrimers, changeDesignPrimers }) => {
+                    designPrimers, changeDesignPrimers,
+                    projectName, changeProjectName }) => {
 
     let nucleaseObject = nucleases.find(n => n.name === selectedNuclease);
     if(nucleaseObject === undefined){
@@ -43,6 +44,12 @@ export default ({ edits, invalid, editColumns, removeEdit, resetEditList, select
                     props => (
                         <Form onSubmit={handleJobSubmit}>
                         <Card body>
+                            <Row>
+                                <Col md={4}>
+                                    <Form.Label>Project name</Form.Label>
+                                    <Form.Control type="text" value={projectName} onChange={changeProjectName} />
+                                </Col>
+                            </Row>
                             <Row>
                                 <Col md={4}>
                                     <Form.Label>Nuclease <OverlayTrigger

@@ -38,6 +38,7 @@ const FETCH_ADVANCED_OPTIONS_FAILED = 'pegit/state/edits/FETCH_ADVANCED_OPTIONS_
 const CHANGE_ADVANCED_OPTION = 'pegit/home/CHANGE_ADVANCED_OPTION';
 const CHANGE_BOWTIE = 'pegit/home/CHANGE_BOWTIE';
 const CHANGE_PRIMERS = 'pegit/home/CHANGE_PRIMERS';
+const CHANGE_PROJECT_NAME = 'pegit/home/CHANGE_PROJECT_NAME';
 
 
 // Reducer
@@ -50,6 +51,7 @@ const INITIAL_STATE = {
     addEdit: {submitting: false, error: null},
     designPrimers: true,
     runBowtie: true,
+    projectName: 'pegIT',
     advancedOptions: {
         pbsMinLength: 13,
         pbsMaxLength: 20,
@@ -145,6 +147,10 @@ export default function reducer(state = INITIAL_STATE, action) {
         case CHANGE_PRIMERS:
             return { ...state, designPrimers: !state.designPrimers };
 
+        case CHANGE_PROJECT_NAME:
+            console.log(action);
+            return { ...state, projectName: action.name };
+
         default:
             return state;
     }
@@ -171,6 +177,7 @@ const removeEdit = (index) => ({type: REMOVE_EDIT, index});
 const selectOrganism = (organism) => ({ type: SELECT_ORGANISM, organism });
 const tickRunBowtie = () => ({ type: CHANGE_BOWTIE });
 const tickDesignPrimers = () => ({ type: CHANGE_PRIMERS });
+const changeProjectName = (name) => ({ type: CHANGE_PROJECT_NAME, name });
 
 const resetEditList = () => ({ type: RESET_EDIT_LIST });
 
@@ -184,7 +191,9 @@ const changeAdvancedOption = (option, value) => ({type: CHANGE_ADVANCED_OPTION, 
 const requestAdvancedOptions = () => ({type: REQUESTED_ADVANCED_OPTIONS});
 const fetchAdvancedOptions = () => ({type: FETCH_ADVANCED_OPTIONS});
 const fetchAdvancedOptionsSuccess = (options) => ({type: FETCH_ADVANCED_OPTIONS_SUCCEEDED, options});
-const fetchAdvancedOptionsFailure = (error) => ({type: FETCH_ADVANCED_OPTIONS_FAILED, error});// Side effects
+const fetchAdvancedOptionsFailure = (error) => ({type: FETCH_ADVANCED_OPTIONS_FAILED, error});
+
+// Side effects
 
 // Here we would do checks for existing data and load whatever we need for this view. Also manage
 // generic tasks such as showing/hiding loaders based on UI needs.
@@ -298,4 +307,5 @@ export { searchGenes, watchSearchGenes,
     requestSearchClinVar, watchSearchClinVar,
     selectGene, clearSearchGenes, selectOrganism,
     removeEdit, resetEditList, watchRequestAddEdit, requestAddEdit, watchRequestAddMultiple, requestAddMultiple,
-    changeAdvancedOption, requestAdvancedOptions, watchRequestAdvancedOptions, tickRunBowtie, tickDesignPrimers }
+    changeAdvancedOption, requestAdvancedOptions, watchRequestAdvancedOptions, tickRunBowtie, tickDesignPrimers,
+    changeProjectName}
