@@ -4,37 +4,49 @@ import { FaExternalLinkAlt } from 'react-icons/fa';
 
 
 const Nicking = ({nicking}) => (<>
-    <Col sm={3}><label>Nicking oligos</label></Col>
-    <Col sm={3}><label>Kind: {nicking.kind}</label></Col>
-    <Col sm={6}><label>Position: {nicking.position}</label></Col>
-    <dt className="col-sm-3">Top</dt>
-    <dl className="col-sm-9">{nicking.top}</dl>
-    <dt className="col-sm-3">Bottom</dt>
-    <dl className="col-sm-9">{nicking.bottom}</dl>
+    <Col sm={12}><b>Nicking oligos</b></Col>
+    <dt className="col-sm-3">Top</dt><dd className="col-sm-9">{nicking.top}</dd>
+    <dt className="col-sm-3">Bottom</dt><dd className="col-sm-9">{nicking.bottom}</dd>
 </>)
 
 const Pair = ({name, top, bottom}) => (<>
-    <Col sm={12}><label>{name[0].toUpperCase() + name.substring(1)} oligos</label></Col>
-    <dt className="col-sm-3">Top</dt>
-    <dl className="col-sm-9">{top}</dl>
-    <dt className="col-sm-3">Bottom</dt>
-    <dl className="col-sm-9">{bottom}</dl>
+    <Col sm={12}><b>{name[0].toUpperCase() + name.substring(1)} oligos</b></Col>
+    <dt className="col-sm-3">Top</dt><dd className="col-sm-9">{top}</dd>
+    <dt className="col-sm-3">Bottom</dt><dd className="col-sm-9">{bottom}</dd>
 </>)
 
 const Single = ({name, oligo}) => (<>
-    <Col sm={12}><label>{name[0].toUpperCase() + name.substring(1)} oligo</label></Col>
-    <dt className="col-sm-3"></dt>
-    <dl className="col-sm-9">{oligo}</dl>
+    <dt className="col-sm-3">{name[0].toUpperCase() + name.substring(1)}</dt><dd className="col-sm-9">{oligo}</dd>
 </>)
 
-export const OligosBox = ({pegRNA}) => {
+export const OligosBox = ({pegRNA, position="right"}) => {
     return <OverlayTrigger
-        placement="right"
+        placement={position}
         trigger="click"
         overlay={
             <Popover id="pegRNAOligosTooltip">
-                <Popover.Title>Recommended oligos</Popover.Title>
+                <Popover.Title>Recommended Designs</Popover.Title>
                 <Popover.Content>
+                    <Row>
+                        <Col>
+                        <b>pegRNA</b><br/>
+                        <dl className="row">
+                            <dt className="col-sm-3">Spacer</dt><dd className="col-sm-9">{pegRNA.spacer}</dd>
+                            <dt className="col-sm-3">RT template ({pegRNA.rtTemplateLength} nt)</dt><dd className="col-sm-9">{pegRNA.rtTemplate}</dd>
+                            <dt className="col-sm-3">PBS ({pegRNA.pbsLength} nt)</dt><dd className="col-sm-9">{pegRNA.pbs}</dd>
+                            <dt className="col-sm-3">Extension sequence</dt><dd className="col-sm-9">{pegRNA.extension}</dd>
+                            <dt className="col-sm-3">Full pegRNA sequence</dt><dd className="col-sm-9">{pegRNA.pegrna}</dd>
+                        </dl>
+                        {pegRNA && pegRNA.hasOwnProperty('nicking') && pegRNA.nicking.length > 0 && <>
+                        <b>nsgRNA</b><br/>
+                        <dl className="row">
+                        <dt className="col-sm-3">Kind</dt><dd className="col-sm-9">{pegRNA.nicking[0].kind}</dd>
+                        <dt className="col-sm-3">Position</dt><dd className="col-sm-9">{pegRNA.nicking[0].position}</dd>
+                        <dt className="col-sm-3">Spacer</dt><dd className="col-sm-9">{pegRNA.nicking[0].spacer}</dd>
+                        </dl></>}
+                        </Col>
+                    </Row>
+                    <hr />
                     <Row>
                         {Object.keys(pegRNA.oligos).map(k => {
                             if(Object.keys(pegRNA.oligos[k]).length === 2){
@@ -43,7 +55,8 @@ export const OligosBox = ({pegRNA}) => {
                                 return <Single key={k} name={k} oligo={pegRNA.oligos[k]} />
                             }
                         })}
-                        {pegRNA && pegRNA.hasOwnProperty('nicking') && pegRNA.nicking.length > 0 && <Nicking nicking={pegRNA.nicking[0]}/> }
+                        {pegRNA && pegRNA.hasOwnProperty('nicking') && pegRNA.nicking.length > 0  && pegRNA.nicking[0].hasOwnProperty('top') && <Pair name="Nicking" top={pegRNA.nicking[0].top} bottom={pegRNA.nicking[0].bottom}/> }
+                        {pegRNA && pegRNA.hasOwnProperty('nicking') && pegRNA.nicking.length > 0  && pegRNA.nicking[0].hasOwnProperty('oligo')  && <Single name="Nicking" oligo={pegRNA.nicking[0].oligo} /> }
                     </Row>
                 </Popover.Content>
             </Popover>
@@ -61,12 +74,12 @@ export const NickingOligosBox = ({nicking}) => {
             <Popover id="nickingOligosTooltip">
                 <Popover.Title>Oligos</Popover.Title>
                 <Popover.Content>
-                    <Row>
+                    <dl className="row">
                         <dt className="col-sm-3">Top</dt>
-                        <dl className="col-sm-9">{nicking && nicking.top}</dl>
+                        <dd className="col-sm-9">{nicking && nicking.top}</dd>
                         <dt className="col-sm-3">Bottom</dt>
-                        <dl className="col-sm-9">{nicking && nicking.bottom}</dl>
-                    </Row>
+                        <dd className="col-sm-9">{nicking && nicking.bottom}</dd>
+                    </dl>
                 </Popover.Content>
             </Popover>
         }
@@ -79,7 +92,7 @@ export const ExtensionOligosBox = ({extension}) => {
         placement="right"
         trigger="click"
         overlay={
-            <Popover id="nickingOligosTooltip">
+            <Popover id="extensionOligosTooltip">
                 <Popover.Title>Oligos</Popover.Title>
                 <Popover.Content>
                     <Row>
