@@ -17,7 +17,7 @@ import EditBox from "./components/EditBox";
 import { LoadingCard } from 'view/Loading';
 
 import { IconContext } from "react-icons";
-import { FaRegCheckCircle, FaRegTimesCircle, FaArrowLeft, FaArrowRight } from 'react-icons/fa';
+import {FaRegCheckCircle, FaRegTimesCircle, FaArrowLeft, FaArrowRight, FaDownload} from 'react-icons/fa';
 
 import { Header, onTargetFormatter, offTargetFormatter, spacerURL, strandFormatter, primerFormatter } from './components/formatters'
 import { pegRNASpacerPosition, pegRNAExtensionPosition } from "./functions/positionCalculations";
@@ -36,7 +36,7 @@ export class Job extends Component {
 
         const { jobId, pegRNAs, organism, edits=[], edit, status='Loading', queuePosition, editOptions, sequenceType,
                 sequenceObject, warning, minPos, primers, routeJobDetail, routeJobSummary,
-                chosenEdit, visualSequence, translations, nuclease, designPercent } = this.props;
+                chosenEdit, visualSequence, translations, nuclease, designPercent, excelExported } = this.props;
         const { annotations } = sequenceObject;
         const { selectedTab } = this.state;
         const chosenEditIndex = edits.map((e, i) => 'edit' + i).indexOf(chosenEdit);
@@ -217,6 +217,11 @@ export class Job extends Component {
                                 </Col>
                             </Row>
                         </Card>
+                        {edits.length === 1 && <Row>
+                            <Col>
+                                <Button style={{float: 'right', margin: '10px'}} href={"/api/jobs/" + jobId + "/download"} disabled={!excelExported}><FaDownload /> Download</Button>
+                            </Col>
+                        </Row>}
                         <Nav variant="tabs" activeKey={selectedTab} onSelect={(k) => this.setState({selectedTab: k})} fill>
                             <Nav.Item>
                                 <Nav.Link eventKey='pegRNAs'>pegRNAs</Nav.Link>
@@ -258,7 +263,7 @@ export class Job extends Component {
 
 const mapStateToProps = (state) => {
 
-    let { jobId, organism, edits, status, nuclease, summary } = state.job.summary;
+    let { jobId, organism, edits=[], status, nuclease, summary=[], excelExported=false } = state.job.summary;
     organism = organism ? organism : {name: undefined, assembly: undefined, source: undefined };
     let { pegRNAs=[], primers=[], edit, queuePosition, warning, options='', sequenceType, start, nickingOffset, visualSequence, translations=[] } = state.job.detail;
 
@@ -284,6 +289,7 @@ const mapStateToProps = (state) => {
         minPos: start + nickingOffset,
         chosenEdit: state.location.payload.edit,
         nuclease,
+        excelExported
     }
 };
 
