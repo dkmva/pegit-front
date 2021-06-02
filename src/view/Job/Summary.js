@@ -66,7 +66,7 @@ export const Summary = ({ organism={}, jobId, status, summary=[], routeJobDetail
                                         {dataField: 'options', text: 'Options'},
                                         {dataField: 'pegRNAs', text: '# pegRNAs'},
                                         {dataField: 'best', text: 'Recommended design', formatter: (cell, row) => {
-                                            return <OligosBox pegRNA={JSON.parse(cell)} position="left" />;
+                                            return cell ? <OligosBox pegRNA={JSON.parse(cell)} position="left" /> : '';
                                             }},
                                         {dataField: 'detail', isDummyField: true, text: '', formatter: (cell, row) => (
                                                 <Button variant="outline-secondary" size="sm" onClick={ () => routeJobDetail(jobId, 'edit' + row.idx ) }>Details</Button> )}] }
