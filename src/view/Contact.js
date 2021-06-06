@@ -8,7 +8,7 @@ export const Contact = () => (
             <Col>
                 <h1>Contact</h1>
                 <Card body>
-                    <p>For any pegIT related inquiries, contact <a href="mailto:mvand@biomed.au.dk">Mads</a></p>
+                    <p>For any pegIT related inquiries, contact <a href="mailto:madsanderson@gmail.com">Mads</a></p>
                 </Card>
             </Col>
         </Row>
