@@ -21,6 +21,9 @@ export const Instructions = () => (
                     <p>The next step is to input the desired genetic change. First you must choose which kind of edit to perform, from a list of available edits.</p>
                     <p>The input form changes corresponding to the selected edit. For information on how to fill the form, click on the <FaRegQuestionCircle /> above the edit selection</p>
                     <p>When the desired inputs have been filled, click 'Add to edit list'. Repeat for more edits. When the desired edits have been added. Click submit to start the job.</p>
+                    <p>To design pegRNAs for reverting a mutation to wild type, the corresponding mutation must be entered, and the 'Repair mutation?' checkbox checked.<br/>
+                    eg. to insert a missing CTT in a mutated sequence, enter the corresponding CTT deletion, and check 'Repair mutation?'.<br/>
+                    Alternatively, one can enter the mutated sequence as a custom sequence and design a CTT insertion based on this sequence.</p>
                     <h3>ClinVar edits</h3>
                     <p>When selecing ClinVar under 'organisms', it is possible to search the clinVar database for variants, and design pegRNAs to introduce or repair the given variant.</p>
                     <h3>Uploading edits</h3>
