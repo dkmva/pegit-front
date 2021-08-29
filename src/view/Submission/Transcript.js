@@ -19,7 +19,7 @@ const mapStateToProps = (state) => {
         organism,
         canSubmit: !!organism.id && !!transcript.id,
         sequenceObject: {id: transcript.transcriptId, name: transcript.name, source: transcript.source, sequence: transcript.sequence},
-        edits: transcript.transcriptType === 'protein_coding' ? edits : edits.map(ed => ({ ...ed, disabled: !ed.allowGenomic})),
+        edits: (transcript.codingSequences && transcript.codingSequences.length > 0) ? edits : edits.map(ed => ({ ...ed, disabled: !ed.allowGenomic})),
         annotations: transcript.exons ? transcript.exons.map((exon, i) => ({
                 name: 'Exon ' + (i+1).toString(),
                 id: 'Exon ' + (i+1).toString(),
