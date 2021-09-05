@@ -621,5 +621,6 @@ export default ({spacer='', pbs='', rtTemplate=''}) => {
                 {spacer.split("").map((_, i) => <path key={i} d={"M"+(466.3-i*10.7)+" 261.5L"+(466.3-i*10.7)+" 285.5"} className="st8"/>)}
             </g>
         </g>
+        <text transform="matrix(1 0 0 1 247.1 292.7799)" className="st6 st11 st12">5&apos;</text>
     </svg>
 }

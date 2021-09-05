@@ -12,7 +12,8 @@ import JobStatusBox from "./components/JobStatusBox";
 import { routePegRNADetail, routeNickingDetail } from 'state/routes';
 
 import { offTargetColumns } from './components/columns'
-import Image from './components/Image'
+import NucleaseSense from './components/NucleaseSense'
+import NucleaseAntiSense from './components/NucleaseAntiSense'
 import NucleaseBox from "../Shared/NucleaseBox";
 
 export class NickingDetail extends Component {
@@ -70,8 +71,10 @@ export class NickingDetail extends Component {
                                     <EditBox edit={edit} editOptions={editOptions}/>
                                 </Col>
                                 <Col md={8}>
-                                    <Image spacer={spacer} />
-
+                                    {pegRNA.strand === -1 ?
+                                        <NucleaseSense spacer={spacer}/> :
+                                        <NucleaseAntiSense spacer={spacer}/>
+                                    }
                                 </Col>
                             </Row>
                         </Card>

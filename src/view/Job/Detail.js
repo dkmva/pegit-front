@@ -20,7 +20,8 @@ import { offTargetColumns, alternateColumns } from './components/columns'
 import JobStatusBox from "./components/JobStatusBox";
 import { pegRNASpacerPosition, pegRNAExtensionPosition, nickingGRNASpacerPosition } from "./functions/positionCalculations";
 
-import Image from './components/Image'
+import NucleaseSense from './components/NucleaseSense'
+import NucleaseAntiSense from './components/NucleaseAntiSense'
 import NucleaseBox from "../Shared/NucleaseBox";
 
 export class PegRNADetail extends Component {
@@ -161,7 +162,12 @@ export class PegRNADetail extends Component {
                                     <EditBox edit={edit} editOptions={options} nuclease={nuclease}/>
                                 </Col>
                                 <Col md={8}>
-                                    <Image spacer={pegRNA.spacer} rtTemplate={pegRNA.rtTemplate} pbs={pegRNA.pbs}/>
+                                    {pegRNA.strand === 1 ?
+                                        <NucleaseSense spacer={pegRNA.spacer} rtTemplate={pegRNA.rtTemplate}
+                                                       pbs={pegRNA.pbs} /> :
+                                        <NucleaseAntiSense spacer={pegRNA.spacer} rtTemplate={pegRNA.rtTemplate}
+                                                           pbs={pegRNA.pbs} />
+                                    }
                                 </Col>
                             </Row>
                         </Card>
