@@ -39,12 +39,12 @@ export class PegRNADetail extends Component {
 
         const { jobId, organism, sequenceObject, status, sequenceType, pegRNA, warning, edit, options,
                 minPos, chosenEdit, routeJobDetail, routePegRNADetail, pegRNAs, chosenPegRNA,
-                visualSequence, nickingOffset, translations, nuclease } = this.props;
+                visualSequence, nickingOffset, translations, nuclease, showScore } = this.props;
         let { nicking=[], spacer='', offtargets=[[],[]], alternateExtensions=[]} = pegRNA;
         const { selectedTab } = this.state;
         const chosenPegRNAIndex = pegRNAs.map(p => p.spacer).indexOf(chosenPegRNA);
 
-        const columns = [{
+        let columns = [{
             dataField: 'spacer',
             text: 'Spacer',
             sort: true,
@@ -66,23 +66,28 @@ export class PegRNADetail extends Component {
             text: 'Oligos',
             formatter: (cell, row) => <NickingOligosBox nicking={row} />,
             headerFormatter: (column) => Header(column, 'Oligos for cloning nicking sgRNA.'),
-        }, {
-            dataField: 'wtScore',
-            text: 'Wild type score',
-            formatter: onTargetFormatter,
-            headerFormatter: (column) => Header(column, 'Target score on wild type sequence'),
-        }, {
-            dataField: 'score',
-            text: 'On Target Score',
-            formatter: onTargetFormatter,
-            headerFormatter: (column) => Header(column, 'Target score on edited sequence'),
-        }, {
+        }];
+
+        if(showScore) {
+            columns.push({
+                dataField: 'wtScore',
+                text: 'Wild type score',
+                formatter: onTargetFormatter,
+                headerFormatter: (column) => Header(column, 'Target score on wild type sequence'),
+            })
+            columns.push({
+                dataField: 'score',
+                text: 'On Target Score',
+                formatter: onTargetFormatter,
+                headerFormatter: (column) => Header(column, 'Target score on edited sequence'),
+            });
+        }
+        columns.push({
             dataField: 'offtargets',
             text: 'Targets',
             formatter: offTargetFormatter,
             headerFormatter: (column) => Header(column, 'Potential (off) targets with [0,1,2,3] mismatches'),
-        },
-        ];
+        });
 
         let primers = [];
 
@@ -218,7 +223,7 @@ export class PegRNADetail extends Component {
                                 />}
                                 {selectedTab === 'offtargets' &&
                                 <BootstrapTable
-                                    keyField='spacer'
+                                    keyField='off target site'
                                     data={ offtargets[1] }
                                     columns={ offTargetColumns }
                                     bootstrap4={true}
@@ -260,6 +265,9 @@ const mapStateToProps = (state) => {
     let { pegRNA } = state.location.payload;
     pegRNA = pegRNAs.find(p => p.spacer === pegRNA) || {};
 
+    let showScore = false;
+    state.nucleases.nucleases.filter(e => e.name === nuclease).forEach(e => showScore = e.canScoreSpacers);
+
     return {
         organism,
         jobId,
@@ -278,6 +286,7 @@ const mapStateToProps = (state) => {
         chosenPegRNA: state.location.payload.pegRNA,
         pegRNAs,
         nuclease,
+        showScore,
     }
 };
 

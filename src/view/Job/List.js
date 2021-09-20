@@ -36,12 +36,12 @@ export class Job extends Component {
 
         const { jobId, pegRNAs, organism, edits=[], edit, status='Loading', queuePosition, editOptions, sequenceType,
                 sequenceObject, warning, minPos, primers, routeJobDetail, routeJobSummary,
-                chosenEdit, visualSequence, translations, nuclease, designPercent, excelExported } = this.props;
+                chosenEdit, visualSequence, translations, nuclease, designPercent, excelExported, showScore } = this.props;
         const { annotations } = sequenceObject;
         const { selectedTab } = this.state;
         const chosenEditIndex = edits.map((e, i) => 'edit' + i).indexOf(chosenEdit);
 
-        const pegRNAColumns = [{
+        let pegRNAColumns = [{
             dataField: 'spacer',
             text: 'Spacer',
             formatter: (cell ) => spacerURL(routePegRNADetail(jobId, chosenEdit, cell), cell),
@@ -77,18 +77,21 @@ export class Job extends Component {
             dataField: 'rtTemplateLength',
             text: 'RTT length',
             headerFormatter: (column) => Header(column, 'Length of the pegRNA reverse transcriptase template'),
-        }, {
-            dataField: 'score',
-            text: 'On Target Score',
-            formatter: onTargetFormatter,
-            headerFormatter: (column) => Header(column, 'On target score'),
-        }, {
+        }]
+        if(showScore) {
+            pegRNAColumns.push({
+                dataField: 'score',
+                text: 'On Target Score',
+                formatter: onTargetFormatter,
+                headerFormatter: (column) => Header(column, 'On target score'),
+            });
+        }
+        pegRNAColumns.push({
             dataField: 'offtargets',
             text: 'Targets',
             formatter: offTargetFormatter,
             headerFormatter: (column) => Header(column, 'Potential Targets with [0,1,2,3] mismatches. Also includes on target if present in the genome.'),
-        },
-        ];
+        });
 
         const primerColumns = [
             {
@@ -270,6 +273,8 @@ const mapStateToProps = (state) => {
     let {sequenceObject = {id: 'undefined', name: 'undefined', source: 'undefined', sequence: ''}} = state.job.detail;
     let designPercent = summary.length / edits.length * 100;
 
+    let showScore = false;
+    state.nucleases.nucleases.filter(e => e.name === nuclease).forEach(e => showScore = e.canScoreSpacers);
     return {
         organism,
         jobId,
@@ -289,7 +294,8 @@ const mapStateToProps = (state) => {
         minPos: start + nickingOffset,
         chosenEdit: state.location.payload.edit,
         nuclease,
-        excelExported
+        excelExported,
+        showScore,
     }
 };
 
